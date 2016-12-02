@@ -1,0 +1,20 @@
+{
+  "name": "eFP-Seq Browser",
+  "description": "eFP-Seq Browser",
+  "icon": "app/data/BAR.png",
+  "tags": [],
+  "fullscreen": "default",
+  "html": "main.html",
+  "scripts": [
+    "scripts/main.js",
+	"scripts/material.min.js",
+	"scripts/tablesorter.js",
+	"scripts/tablefilter/tablefilter.js",
+	"scripts/custom.js"
+  ],
+  "styles": [
+    "styles/main.css",
+	"styles/material.green-pink.min.css",
+	"styles/style.css"
+  ]
+}
