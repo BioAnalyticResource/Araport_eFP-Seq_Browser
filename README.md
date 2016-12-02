@@ -1,50 +1,19 @@
-# efp-seq-browser
+# eFP-Seq Browser
 
-An [AIP](http://www.araport.org) Science App created using [Yeoman](http://yeoman.io)
-and the [AIP science app generator](https://www.npmjs.org/package/generator-aip-science-app).
+This is eFP-Seq Browser from the BAR developed for the Araport project. 
 
-## App Code
+## How to install and run on Araport
+1. Clear web browser cache and log into araport.org
+2. Click "Tools" then "My Workspace".
+3. Workspace page will load. On the top right, there is a wheel. Click the wheel, and click "Install an App".
+4. Enter the following: <br />
+URL: https://github.com/BioAnalyticResource/eFP-Seq-Browser.git <br />
+Release version: v0.0.2 <br />
+and click "Save" <br />
+5. The page will reload. Click on "View App Full Screen".
+6. Enter a gene, and it should work.
 
-Your application code is in the `app/` subdirectory:
+## Funding Acknowledgement
 
-```
-.
-+-- app/
-|   +-- app.html
-|   +-- scripts/
-|       +-- app.js
-|   +-- styles/
-|       +-- app.css
+Genome Canada
 
-```
-
-## Development
-
-You can interactively develop your app using the built-in test runner. Simply
-execute this command from within the base directory of your app:
-
-```bash
-$ grunt
-```
-
-This will run your application on a local server at
-[http://localhost:9000](http://localhost:9000). It will also watch your
-app code for changes and automatically reload the browser when it detects
-changes.
-
-You can also run the test runner app in "production" mode with the command:
-
-```bash
-$ grunt serve:dist
-```
-
-This will start the same server, but without source code monitoring (live reload)
-and will also permit connections from outside, for example if you wanted to host
-the app yourself on a publicly accessible server.
-
-## Deployment
-
-When you are ready you can upload your application to the
-[AIP Science Apps Workspace](http://www.araport.org/apps).
-
-** More details coming soon! **
