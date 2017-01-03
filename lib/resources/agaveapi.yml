@@ -1,0 +1,5876 @@
+swagger: '2.0'
+info:
+  version: 2.1.0-ra6016
+  title: iPlant Agave API
+  description: "Your Science-as-a-Service API Platform. \nFor more information, visit <a href=\"http://agaveapi.co\">http://agaveapi.co</a>"
+  contact:
+    email: dooley@tacc.utexas.edu
+  termsOfService: 'http://agaveapi.co/terms/'
+tags:
+  - name: adama
+    description: ''
+  - name: apps
+    description: ''
+  - name: auth
+    description: ''
+  - name: clients
+    description: ''
+  - name: files
+    description: ''
+  - name: jobs
+    description: ''
+  - name: meta
+    description: ''
+  - name: monitors
+    description: ''
+  - name: notifications
+    description: ''
+  - name: postits
+    description: ''
+  - name: profiles
+    description: ''
+  - name: systems
+    description: ''
+  - name: transforms
+    description: ''
+paths:
+  /community/v0.3/namespaces:
+    get:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: list of namespaces
+        '500':
+          description: internal error
+      description: ''
+      summary: Get list of namespaces
+      operationId: getNamespaces
+      produces:
+        - application/json
+    post:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Create a new namespace
+      operationId: createNamespace
+      produces:
+        - application/json
+      parameters:
+        - in: formData
+          description: name of the namespace
+          name: name
+          required: true
+          type: string
+        - in: formData
+          description: url associated to this namespace
+          name: url
+          required: false
+          type: string
+        - in: formData
+          description: description of this namespace
+          name: description
+          required: false
+          type: string
+  /community/v0.3/status:
+    get:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: server is running
+        '504':
+          description: server is down
+      description: ''
+      summary: Return status of the server
+      operationId: getStatus
+      produces:
+        - application/json
+  '/community/v0.3/{namespace}':
+    delete:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Delete a namespace
+      operationId: deleteNamespace
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: name of namespace
+          name: namespace
+          required: true
+          type: string
+    get:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get information about a namespace
+      operationId: getNamespace
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: name of namespace
+          name: namespace
+          required: true
+          type: string
+  '/community/v0.3/{namespace}/services':
+    get:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: List all services
+      operationId: getServices
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: name of namespace
+          name: namespace
+          required: true
+          type: string
+    post:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Create new service
+      operationId: createService
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: namespace of the service
+          name: namespace
+          required: true
+          type: string
+        - in: formData
+          description: url of git repository
+          name: git_repository
+          required: false
+          type: string
+        - in: formData
+          description: path of metadata file relative to git_repository root
+          name: metadata
+          required: false
+          type: string
+        - in: formData
+          description: name of the service
+          name: name
+          required: false
+          type: string
+        - in: formData
+          description: type of the adapter
+          name: type
+          required: false
+          type: string
+        - in: formData
+          description: version of the adapter
+          name: version
+          required: false
+          type: string
+        - in: formData
+          description: url of the third party data service
+          name: url
+          required: false
+          type: string
+        - in: formData
+          description: ip or domain to be whitelisted
+          name: whitelist
+          required: false
+          type: string
+        - in: formData
+          description: description of the service
+          name: description
+          required: false
+          type: string
+        - in: formData
+          description: third party package needed by the adapter
+          name: requirements
+          required: false
+          type: string
+        - in: formData
+          description: url to notify when adapter is ready
+          name: notify
+          required: false
+          type: string
+        - in: formData
+          description: location of the array of result in response
+          name: json_path
+          required: false
+          type: string
+        - in: formData
+          description: path of main module relative to git_repository root
+          name: main_module
+          required: false
+          type: string
+        - in: formData
+          description: type of the adapter
+          name: code
+          required: false
+          type: string
+  '/community/v0.3/{namespace}/{service}':
+    delete:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Delete a service
+      operationId: deleteService
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: namespace of the service
+          name: namespace
+          required: true
+          type: string
+        - in: path
+          description: 'name of the service, including the version'
+          name: service
+          required: true
+          type: string
+    get:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get information about a service
+      operationId: getService
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: namespace of the service
+          name: namespace
+          required: true
+          type: string
+        - in: path
+          description: 'name of the service, including the version'
+          name: service
+          required: true
+          type: string
+  '/community/v0.3/{namespace}/{service}/docs':
+    get:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Perform a query using a service
+      operationId: docs
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: namespace
+          required: true
+          type: string
+        - in: path
+          name: service
+          required: true
+          type: string
+  '/community/v0.3/{namespace}/{service}/search':
+    get:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Perform a query using a service
+      operationId: search
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: namespace
+          required: true
+          type: string
+        - in: path
+          name: service
+          required: true
+          type: string
+  '/community/v0.3/{namespace}/{service}/list':
+    get:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: List all objects using a service
+      operationId: list
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: namespace
+          required: true
+          type: string
+        - in: path
+          name: service
+          required: true
+          type: string
+  '/community/v0.3/{namespace}/{service}/access':
+    get:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Perform a GET request via a passthrough adapter
+      operationId: getAccess
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: namespace
+          required: true
+          type: string
+        - in: path
+          name: service
+          required: true
+          type: string
+    post:
+      tags:
+        - adama
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Perform a POST request via a passthrough adapter
+      operationId: postAccess
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: namespace
+          required: true
+          type: string
+        - in: path
+          name: service
+          required: true
+          type: string
+  /apps/v2/:
+    get:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a list of available applications.
+      operationId: list
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          description: Whether to return only public apps.
+          name: publicOnly
+          required: false
+          type: string
+        - in: query
+          description: Whether to return only private apps.
+          name: privateOnly
+          required: false
+          type: string
+    post:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Register and update new applications.
+      operationId: add
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          description: 'The description of the app to add or update. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ApplicationRequest'
+  '/apps/v2/{appId}':
+    get:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Get details of an application by it's unique id."
+      operationId: get
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+    post:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Update an application.
+      operationId: update
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+        - in: body
+          description: 'The description of the app to add or update. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ApplicationRequest'
+    put:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Edit an application.
+      operationId: manage
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+        - in: body
+          description: The operation to perform.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ApplicationOperationRequest'
+    delete:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes an application.
+      operationId: delete
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+  '/apps/v2/{appId}/pems':
+    get:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get the permission ACL for this application.
+      operationId: listPermissions
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+    post:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Add or update a user's permission for an application."
+      operationId: updateApplicationPermissions
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+        - in: body
+          description: 'The permission add or update. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ApplicationPermissionRequest'
+    delete:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes all permissions on an application.
+      operationId: deletePermissions
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+  '/apps/v2/{appId}/pems/{username}':
+    get:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Get a specific user's permissions for an application."
+      operationId: listPermissionsForUser
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+        - in: path
+          description: The username of the api user associated with the permission.
+          name: username
+          required: true
+          type: string
+    post:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Add or update a user's permission for an application."
+      operationId: updatePermissionsForUser
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+        - in: path
+          description: The username of the api user associated with the permission
+          name: username
+          required: true
+          type: string
+        - in: body
+          description: 'The permission add or update. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ApplicationPermissionRequest'
+    delete:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes all permissions for the given user on an application.
+      operationId: deletePermissionsForUser
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The id of the application. The application id is made up of the name and version separated by a dash.
+          name: appId
+          required: true
+          type: string
+        - in: path
+          description: The username of the api user associated with the permission
+          name: username
+          required: true
+          type: string
+  '/apps/v2/name/{name}':
+    get:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a list of applications with the given name.
+      operationId: listByName
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The name of the application. This should not include the version number.
+          name: name
+          required: true
+          type: string
+        - in: query
+          description: Whether to return only public apps.
+          name: publicOnly
+          required: false
+          type: string
+        - in: query
+          description: Whether to return only private apps.
+          name: privateOnly
+          required: false
+          type: string
+  '/apps/v2/tag/{tag}':
+    get:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a list of applications with the given tag.
+      operationId: listByTag
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The tag of the application.
+          name: tag
+          required: true
+          type: string
+        - in: query
+          description: Whether to return only public apps.
+          name: publicOnly
+          required: false
+          type: string
+        - in: query
+          description: Whether to return only private apps.
+          name: privateOnly
+          required: false
+          type: string
+  '/apps/v2/ontology/{term}':
+    get:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a list of applications with the given ontological term.
+      operationId: listByOntologyTerm
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The tag of the ontological term.
+          name: term
+          required: true
+          type: string
+        - in: query
+          description: Whether to return only public apps.
+          name: publicOnly
+          required: false
+          type: string
+        - in: query
+          description: Whether to return only private apps.
+          name: privateOnly
+          required: false
+          type: string
+  '/apps/v2/{uniqueName}/form':
+    get:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a submission form for the named application.
+      operationId: getJobSubmissionForm
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: "The app's uniqueName"
+          name: uniqueName
+          required: true
+          type: string
+  '/apps/v2/system/{systemId}':
+    get:
+      tags:
+        - apps
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a list of applications with the given systemId as their executionHost.
+      operationId: listBySystemId
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          description: The system in question
+          name: systemId
+          required: true
+          type: string
+        - in: query
+          description: Whether to return only public apps.
+          name: publicOnly
+          required: false
+          type: string
+        - in: query
+          description: Whether to return only private apps.
+          name: privateOnly
+          required: false
+          type: string
+  /auth/v2/:
+    get:
+      tags:
+        - auth
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Validate a token.
+      operationId: check
+    post:
+      tags:
+        - auth
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Generate a new token.
+      operationId: createToken
+      parameters:
+        - in: formData
+          description: 'The username of a valid api user for whom this token will be generated. Default: the authenticated user'
+          name: username
+          required: false
+          type: string
+        - in: formData
+          description: 'The username of a valid internal user to associate with this token. Default: empty'
+          name: internalUsername
+          required: false
+          type: string
+        - in: formData
+          description: 'The number of seconds this token should remain valid. Default: 7200 (2 hours)'
+          name: lifetime
+          required: false
+          type: integer
+        - in: formData
+          description: 'The maximum number of times this token can be used. Default: no limit'
+          name: maxUses
+          required: false
+          type: integer
+  /auth/v2/tokens/:
+    get:
+      tags:
+        - auth
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Returns all valid tokens for the user
+      operationId: list
+  '/auth/v2/tokens/{token}':
+    get:
+      tags:
+        - auth
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Returns the token with the given nonce
+      operationId: get
+      parameters:
+        - in: path
+          description: The token to get
+          name: token
+          required: true
+          type: string
+    put:
+      tags:
+        - auth
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Refresh the given token.
+      operationId: refresh
+      parameters:
+        - in: path
+          description: The token to get
+          name: token
+          required: true
+          type: string
+    delete:
+      tags:
+        - auth
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Delete the given token token.
+      operationId: delete
+      parameters:
+        - in: path
+          description: The token to get
+          name: token
+          required: true
+          type: string
+  /clients/v2/:
+    get:
+      tags:
+        - clients
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: List existing clients
+      operationId: list
+    post:
+      tags:
+        - clients
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid username format
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The user profile cannot be found
+        '500':
+          description: The service was unable to query the profile database
+      description: ''
+      summary: Create a new client
+      operationId: create
+      parameters:
+        - in: body
+          description: The api client to create
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ClientRequest'
+  '/clients/v2/{clientName}':
+    get:
+      tags:
+        - clients
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Returns a detailed description of a named client.
+      operationId: getClientByName
+      parameters:
+        - in: path
+          description: The name of the client to be deleted
+          name: clientName
+          required: true
+          type: string
+    delete:
+      tags:
+        - clients
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Immediately deletes this client and renders the API keys useless.
+      operationId: delete
+      parameters:
+        - in: path
+          description: The name of the client to be deleted
+          name: clientName
+          required: true
+          type: string
+  '/clients/v2/{clientName}/subscriptions':
+    get:
+      tags:
+        - clients
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Lists all APIs to which the client is subscribed
+      operationId: listSubscriptionsForClient
+      parameters:
+        - in: path
+          description: The name of the client to be deleted
+          name: clientName
+          required: true
+          type: string
+    post:
+      tags:
+        - clients
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Lists all APIs to which the client is subscribed
+      operationId: addSubscriptionForClient
+      parameters:
+        - in: path
+          description: The name of the client to be subscribe to this api
+          name: clientName
+          required: true
+          type: string
+        - in: body
+          description: The api client to create
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ClientSubscriptionRequest'
+    delete:
+      tags:
+        - clients
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Unsubscribe the client from all APIs
+      operationId: deleteSubscriptionsForClient
+      parameters:
+        - in: path
+          description: The name of the client to be deleted
+          name: clientName
+          required: true
+          type: string
+  '/files/v2/media/{sourcefilePath}':
+    get:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Download a file from the user's default storage location."
+      operationId: downloadFromDefaultSystem
+      parameters:
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: sourcefilePath
+          required: true
+          type: string
+    post:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Import a file via direct upload or importing from a url to the user's default storage location."
+      operationId: importToDefaultSystem
+      parameters:
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: sourcefilePath
+          required: true
+          type: string
+        - in: formData
+          description: The file format this file is in. Defaults to raw. This will be used in file transform operations.
+          name: fileType
+          required: false
+          type: string
+        - in: formData
+          description: 'The URI to notify when the import is complete. This can be an email address or http URL. If a URL is given, a GET will be made to this address. URL templating is supported. Valid template values are: ${NAME}, ${SOURCE_FORMAT}, ${DEST_FORMAT}, ${STATUS}'
+          name: callbackURL
+          required: false
+          type: string
+        - in: formData
+          description: 'The name of the file after importing. If not specified, the uploaded file name will be used.'
+          name: fileName
+          required: false
+          type: string
+        - in: formData
+          description: The URL to import the file from. This parameter is used if not file is uploaded with this post.
+          name: urlToIngest
+          required: false
+          type: string
+        - in: formData
+          description: The file to upload.
+          name: fileToUpload
+          required: false
+          type: file
+    put:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Perform an action on a file or folder.
+      operationId: manageOnDefaultSystem
+      parameters:
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: sourcefilePath
+          required: true
+          type: string
+        - in: body
+          description: 'The operation to perform. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/FileOperationRequest'
+    delete:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes a file or folder.
+      operationId: deleteFromDefaultSystem
+      parameters:
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: sourcefilePath
+          required: true
+          type: string
+  '/files/v2/media/system/{systemId}/{filePath}':
+    get:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Download a file from the user's default storage location."
+      operationId: download
+      parameters:
+        - in: path
+          description: The unique id of the system on which the data resides.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+    post:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Import a file via direct upload or importing from a url to the user's default storage location."
+      operationId: importData
+      parameters:
+        - in: path
+          description: The unique id of the system on which the data resides.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+        - in: formData
+          description: The file format this file is in. Defaults to raw. This will be used in file transform operations.
+          name: fileType
+          required: false
+          type: string
+        - in: formData
+          description: 'The URI to notify when the import is complete. This can be an email address or http URL. If a URL is given, a GET will be made to this address. URL templating is supported. Valid template values are: ${NAME}, ${SOURCE_FORMAT}, ${DEST_FORMAT}, ${STATUS}'
+          name: callbackURL
+          required: false
+          type: string
+        - in: formData
+          description: 'The name of the file after importing. If not specified, the uploaded file name will be used.'
+          name: fileName
+          required: false
+          type: string
+        - in: formData
+          description: The URL to import the file from. This parameter is used if not file is uploaded with this post.
+          name: urlToIngest
+          required: false
+          type: string
+        - in: formData
+          description: The file to upload.
+          name: fileToUpload
+          required: false
+          type: file
+    put:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Perform an action on a file or folder.
+      operationId: manage
+      parameters:
+        - in: path
+          description: The unique id of the system on which the data resides.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+        - in: body
+          description: 'The operation to perform. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/FileOperationRequest'
+    delete:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes a file or folder.
+      operationId: delete
+      parameters:
+        - in: path
+          description: The unique id of the system on which the data resides.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+  '/files/v2/listings/{filePath}':
+    get:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a remote directory listing.
+      operationId: listOnDefaultSystem
+      parameters:
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+  '/files/v2/listings/system/{systemId}/{filePath}':
+    get:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a remote directory listing on a specific system.
+      operationId: list
+      parameters:
+        - in: path
+          description: The unique id of the system on which the data resides.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+  '/files/v2/history/{filePath}':
+    get:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Download a file from the user's default storage location."
+      operationId: getHistoryOnDefaultSystem
+      parameters:
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+  '/files/v2/history/system/{systemId}/{filePath}':
+    get:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Download a file from the user's default storage location."
+      operationId: getHistory
+      parameters:
+        - in: path
+          description: The systemId.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The path of the file relative to the given system root location.
+          name: filePath
+          required: true
+          type: string
+  '/files/v2/pems/{filePath}':
+    get:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: List all the share permissions for a file or folder.
+      operationId: listPermissionsOnDefaultSystem
+      parameters:
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+    post:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Update permissions for a single user.
+      operationId: updatePermissionsOnDefaultSystem
+      parameters:
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+        - in: body
+          description: 'The permission add or update. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/FilePermissionRequest'
+  '/files/v2/pems/system/{systemId}/{filePath}':
+    get:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: List all the share permissions for a file or folder.
+      operationId: listPermissions
+      parameters:
+        - in: path
+          description: The systemId.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+    post:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Update permissions for a single user.
+      operationId: updatePermissions
+      parameters:
+        - in: path
+          description: The systemId.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+        - in: body
+          description: 'The permission add or update. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/FilePermissionRequest'
+    delete:
+      tags:
+        - files
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes all permissions on a file except those of the owner.
+      operationId: deletePermissions
+      parameters:
+        - in: path
+          description: The systemId.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: "The path of the file relative to the user's default storage location."
+          name: filePath
+          required: true
+          type: string
+  /jobs/v2/:
+    get:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a list of jobs the authenticated user had submitted.
+      operationId: list
+    post:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Submit a new job request.
+      operationId: submit
+      parameters:
+        - in: body
+          description: The description of the job to submit. This can be either a file upload or json posted to the request body.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/JobRequest'
+  '/jobs/v2/{jobId}':
+    get:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get details of the job with the specific job id.
+      operationId: get
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: integer
+    post:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Perform an action on a job.
+      operationId: manage
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+        - in: body
+          description: The operation to perform.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/JobOperationRequest'
+    delete:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Deletes a job from the user's history."
+      operationId: delete
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+  '/jobs/v2/{jobId}/history':
+    get:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get the history of this job.
+      operationId: getHistory
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+  '/jobs/v2/{jobId}/pems':
+    get:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get the permission ACL for this job.
+      operationId: listPermissions
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+    post:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Add or update a user's permission for an application."
+      operationId: updatePermissions
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+        - in: body
+          description: 'The permission add or update. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/JobPermissionRequest'
+    delete:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes all permissions on an job.
+      operationId: deletePermissions
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+  '/jobs/v2/{jobId}/pems/{username}':
+    get:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Get a specific user's permissions for a job."
+      operationId: listPermissionsForUser
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+        - in: path
+          description: The username of the api user associated with the permission.
+          name: username
+          required: true
+          type: string
+    post:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Add or update a user's permission for an job."
+      operationId: updatePermissionsForUser
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+        - in: path
+          description: The username of the api user associated with the permission
+          name: username
+          required: true
+          type: string
+        - in: body
+          description: 'The permission to update. '
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/JobPermissionRequest'
+    delete:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes all permissions for the given user on an job.
+      operationId: deletePermissionsForUser
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+        - in: path
+          description: The username of the api user associated with the permission
+          name: username
+          required: true
+          type: string
+  '/jobs/v2/{jobId}/status':
+    get:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get the status of the job.
+      operationId: getStatus
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+  '/jobs/v2/{jobId}/outputs/listings/{filePath}':
+    get:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: List the output folder for a job.
+      operationId: listOutputs
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+        - in: path
+          description: The path to an output file or folder relative to the job output directory. This resource will follow data around as it moves from the execution system to archival storage.
+          name: filePath
+          required: true
+          type: string
+  '/jobs/v2/{jobId}/outputs/media/{filePath}':
+    get:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Download an output file from a specific job.
+      operationId: downloadOutput
+      parameters:
+        - in: path
+          description: The id of the job.
+          name: jobId
+          required: true
+          type: string
+        - in: path
+          description: 'The path to an output file relative to the job output directory. '
+          name: filePath
+          required: true
+          type: string
+  '/jobs/v2/search/{attribute}/{value}':
+    get:
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Find jobs matching the given attribute/value combination(s).
+      operationId: search
+      parameters:
+        - in: path
+          description: The attribute to query by. This can be any job field.
+          name: attribute
+          required: true
+          type: string
+        - in: path
+          description: The value of the attribute to query for.
+          name: value
+          required: true
+          type: string
+  /meta/v2/data:
+    get:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user does not supply a UUID or supplies an invalid JSON query
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The specified metadata cannot be found
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: List and/or search metadata.
+      operationId: listMetadata
+      parameters:
+        - in: query
+          description: The query to perform. Traditional MongoDB queries are supported
+          name: q
+          required: true
+          type: string
+    post:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid form
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: Update or Add new Metadata.
+      operationId: addMetadata
+      parameters:
+        - in: body
+          description: The metadata to add.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataRequest'
+  '/meta/v2/data/{uuid}':
+    get:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user does not supply a UUID
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The specified metadata cannot be found
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: Retrieve Metadata.
+      operationId: getMetadata
+      parameters:
+        - in: path
+          description: The uuid of the metadata item
+          name: uuid
+          required: true
+          type: string
+    post:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid form
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: Update or Add new Metadata.
+      operationId: updateMetadata
+      parameters:
+        - in: path
+          description: The uuid of the metadata item
+          name: uuid
+          required: true
+          type: string
+        - in: body
+          description: The metadata to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataRequest'
+    delete:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user supplies no UUID
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: Remove Metadata from the system.
+      operationId: deleteMetadata
+      parameters:
+        - in: path
+          description: The uuid of the metadata item
+          name: uuid
+          required: true
+          type: string
+  /meta/v2/schemas:
+    get:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user does not supply a Schema UUID
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the schema database
+      description: ''
+      summary: Retrieve Metadata Schemas.
+      operationId: searchSchema
+    post:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid form or JSON schema
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the schema database
+      description: ''
+      summary: Add a new Metadata Schema.
+      operationId: addSchema
+      parameters:
+        - in: body
+          description: A valid JSON Schema object
+          name: body
+          required: true
+          schema:
+            type: string
+  '/meta/v2/schemas/{uuid}':
+    get:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user does not supply a Schema UUID
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the schema database
+      description: ''
+      summary: Retrieve Metadata Schemata.
+      operationId: getSchema
+      parameters:
+        - in: path
+          description: The uuid of the metadata schema item
+          name: uuid
+          required: true
+          type: string
+    post:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid form or JSON schema
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the schema database
+      description: ''
+      summary: Update or Add a new Metadata Schema.
+      operationId: updateSchema
+      parameters:
+        - in: path
+          description: The uuid of the metadata schema item
+          name: uuid
+          required: true
+          type: string
+        - in: body
+          description: A valid JSON Schema object
+          name: body
+          required: true
+          schema:
+            type: string
+    delete:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a user does not supply a Schema UUID
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the schema database
+      description: ''
+      summary: Remove Metadata Schema from the system.
+      operationId: deleteSchema
+      parameters:
+        - in: path
+          description: The uuid of the metadata schema item
+          name: uuid
+          required: true
+          type: string
+  '/meta/v2/data/{uuid}/pems':
+    get:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a metadata UUID is not supplied or is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified metadata.
+        '404':
+          description: The specified metadata cannot be found
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: Get the permission ACL for this metadata.
+      operationId: listMetadataPermissions
+      parameters:
+        - in: path
+          description: The uuid of the metadata item
+          name: uuid
+          required: true
+          type: string
+    post:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a valid metadata UUID is not supplied or if the form is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified metadata.
+        '404':
+          description: The specified user cannot be found
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: "Add or update a user's permission for the given metadata."
+      operationId: updateMetadataPermissions
+      parameters:
+        - in: path
+          description: The uuid of the metadata item
+          name: uuid
+          required: true
+          type: string
+        - in: body
+          description: The metadata permission to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataPermissionRequest'
+    delete:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a metadata UUID is not supplied or is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified metadata.
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: Deletes all permissions on the given metadata.
+      operationId: deleteMetadataPermission
+      parameters:
+        - in: path
+          description: The uuid of the metadata item
+          name: uuid
+          required: true
+          type: string
+  '/meta/v2/data/{uuid}/pems/{username}':
+    get:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a metadata UUID is not supplied or is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified metadata.
+        '404':
+          description: The specified metadata cannot be found
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: Get the permission ACL for this metadata.
+      operationId: listMetadataPermissionsForUser
+      parameters:
+        - in: path
+          description: The uuid of the metadata item
+          name: uuid
+          required: true
+          type: string
+        - in: path
+          description: The username of the permission owner
+          name: username
+          required: true
+          type: string
+    post:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a valid metadata UUID is not supplied or if the form is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified metadata.
+        '404':
+          description: The specified user cannot be found
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: "Add or update a user's permission for the given metadata."
+      operationId: updateMetadataPermissionsForUser
+      parameters:
+        - in: path
+          description: The uuid of the metadata item
+          name: uuid
+          required: true
+          type: string
+        - in: path
+          description: The username of the permission owner
+          name: username
+          required: true
+          type: string
+        - in: body
+          description: The metadata permission to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataPermissionRequest'
+    delete:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a metadata UUID is not supplied or is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified metadata.
+        '500':
+          description: The service was unable to query the metadata database
+      description: ''
+      summary: Deletes all permissions on the given metadata.
+      operationId: deleteMetadataPermissionsForUser
+      parameters:
+        - in: path
+          description: The uuid of the metadata item
+          name: uuid
+          required: true
+          type: string
+        - in: path
+          description: The username of the permission owner
+          name: username
+          required: true
+          type: string
+  '/meta/v2/schemas/{uuid}/pems':
+    get:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a schema UUID is not supplied or is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified schema.
+        '404':
+          description: The specified schema cannot be found
+        '500':
+          description: The service was unable to query the metadata schema database
+      description: ''
+      summary: Get the permission ACL for this schema.
+      operationId: listSchemaPermissions
+      parameters:
+        - in: path
+          description: The uuid of the metadata schema item
+          name: uuid
+          required: true
+          type: string
+    post:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a valid schema UUID is not supplied or if the form is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified schema.
+        '404':
+          description: The specified user cannot be found
+        '500':
+          description: The service was unable to query the metadata schema database
+      description: ''
+      summary: "Add or update a user's permission for the given schema."
+      operationId: updateSchemaPermissions
+      parameters:
+        - in: path
+          description: The uuid of the metadata schema item
+          name: uuid
+          required: true
+          type: string
+        - in: body
+          description: The schema permission to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataPermissionRequest'
+    delete:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a schema UUID is not supplied or is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified schema.
+        '500':
+          description: The service was unable to query the metadata schema database
+      description: ''
+      summary: Deletes all permissions on the given schema.
+      operationId: deleteSchemaPermissions
+      parameters:
+        - in: path
+          description: The uuid of the metadata schema item
+          name: uuid
+          required: true
+          type: string
+  '/meta/v2/schemas/{uuid}/pems/{username}':
+    get:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a schema UUID is not supplied or is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified schema.
+        '404':
+          description: The specified schema cannot be found
+        '500':
+          description: The service was unable to query the metadata schema database
+      description: ''
+      summary: Get the permission ACL for this schema.
+      operationId: listSchemaPermissionsForUser
+      parameters:
+        - in: path
+          description: The uuid of the metadata schema item
+          name: uuid
+          required: true
+          type: string
+        - in: path
+          description: The username of the permission owner
+          name: username
+          required: true
+          type: string
+    post:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a valid schema UUID is not supplied or if the form is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified schema.
+        '404':
+          description: The specified user cannot be found
+        '500':
+          description: The service was unable to query the metadata schema database
+      description: ''
+      summary: "Add or update a user's permission for the given metadata schema."
+      operationId: updateSchemaPermissionsForUser
+      parameters:
+        - in: path
+          description: The uuid of the metadata schema item
+          name: uuid
+          required: true
+          type: string
+        - in: path
+          description: The username of the permission owner
+          name: username
+          required: true
+          type: string
+        - in: body
+          description: The schema permission to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataPermissionRequest'
+    delete:
+      tags:
+        - meta
+      responses:
+        '400':
+          description: Raised if a schema UUID is not supplied or is invalid.
+        '403':
+          description: Failed to authenticate the user or the user is not authorized to access the specified schema.
+        '500':
+          description: The service was unable to query the metadata schema database
+      description: ''
+      summary: Deletes all permissions on the given metadata.
+      operationId: deleteSchemaPermissionsForUser
+      parameters:
+        - in: path
+          description: The uuid of the metadata schema item
+          name: uuid
+          required: true
+          type: string
+        - in: path
+          description: The username of the permission owner
+          name: username
+          required: true
+          type: string
+  /monitors/v2/:
+    get:
+      tags:
+        - monitors
+      responses:
+        '400':
+          description: Raised if a user does not supply a UUID or supplies an invalid JSON query
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The specified Monitor cannot be found
+        '500':
+          description: The service was unable to process the request.
+      description: ''
+      summary: Retrieve Monitor for a specific resource.
+      operationId: list
+      parameters:
+        - in: query
+          description: The target to search for.
+          name: target
+          required: false
+          type: string
+        - in: query
+          description: Filter by monitors that are active or inactive.
+          name: active
+          required: false
+          type: string
+    post:
+      tags:
+        - monitors
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid form
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to save the monitor.
+      description: ''
+      summary: Update or Add new Monitor.
+      operationId: add
+      parameters:
+        - in: body
+          description: The description of the app to add or update. This can be either a file upload or json posted to the request body.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/MonitorRequest'
+  '/monitors/v2/{monitorId}':
+    get:
+      tags:
+        - monitors
+      responses:
+        '400':
+          description: Raised if a user does not supply a UUID
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The specified Monitor cannot be found
+        '500':
+          description: The service was unable to process the request.
+      description: ''
+      summary: Retrieve a specific monitor.
+      operationId: get
+      parameters:
+        - in: path
+          description: The id of the monitor
+          name: monitorId
+          required: true
+          type: string
+    post:
+      tags:
+        - monitors
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid form
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to process the request.
+      description: ''
+      summary: Updates an existing monitor.
+      operationId: update
+      parameters:
+        - in: path
+          description: The id of the monitor
+          name: monitorId
+          required: true
+          type: string
+        - in: body
+          description: The description of the app to add or update. This can be either a file upload or json posted to the request body.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/MonitorRequest'
+    delete:
+      tags:
+        - monitors
+      responses:
+        '400':
+          description: Raised if a user supplies no UUID
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to process the request.
+      description: ''
+      summary: Deletes a monitor.
+      operationId: delete
+      parameters:
+        - in: path
+          description: The id of the monitor
+          name: monitorId
+          required: true
+          type: string
+  '/monitors/v2/{monitorId}/checks':
+    get:
+      tags:
+        - monitors
+      responses:
+        '400':
+          description: Raised if a user does not supply a UUID or supplies an invalid JSON query
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The specified Monitor cannot be found
+        '500':
+          description: The service was unable to process the request.
+      description: ''
+      summary: Retrieve monitor checks for a specific resource.
+      operationId: listChecks
+      parameters:
+        - in: path
+          description: The id of the monitor
+          name: monitorId
+          required: true
+          type: string
+        - in: query
+          description: A timestamp indicating the earliest time of the first monitor check in ISO 8601 format
+          name: startDate
+          required: false
+          type: string
+        - in: query
+          description: A timestamp indicating the latest time of the first monitor check in ISO 8601 format
+          name: endDate
+          required: false
+          type: string
+        - in: query
+          description: A timestamp indicating the latest time of the first monitor check in ISO 8601 format
+          name: result
+          required: false
+          type: string
+        - in: query
+          description: The max number of results.
+          name: limit
+          required: false
+          type: integer
+          default: 250
+        - in: query
+          description: 'The number of records to when returning the results. When paginating results, the page number = ceil(offset/limit)'
+          name: offset
+          required: false
+          type: integer
+          default: 0
+    post:
+      tags:
+        - monitors
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid form
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to process the request.
+      description: ''
+      summary: Forces a monitor check to run.
+      operationId: runCheck
+      parameters:
+        - in: path
+          description: The id of the monitor
+          name: monitorId
+          required: true
+          type: string
+  '/monitors/v2/{monitorId}/checks/{checkId}':
+    get:
+      tags:
+        - monitors
+      responses:
+        '400':
+          description: Raised if a user does not supply a UUID
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The specified Monitor cannot be found
+        '500':
+          description: The service was unable to process the request.
+      description: ''
+      summary: Retrieve a specific monitor check
+      operationId: getCheck
+      parameters:
+        - in: path
+          description: The id of the monitor
+          name: monitorId
+          required: true
+          type: string
+        - in: path
+          description: The id of the monitor check
+          name: checkId
+          required: true
+          type: string
+  /notifications/v2/:
+    get:
+      tags:
+        - notifications
+      responses:
+        '400':
+          description: Raised if a user does not supply a UUID or supplies an invalid JSON query
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The specified notification cannot be found
+        '500':
+          description: The service was unable to query the notification database
+      description: ''
+      summary: Retrieve notification for a specific resource.
+      operationId: list
+      parameters:
+        - in: query
+          description: The uuid of the associated resource. All notifications for this resource visible to the user will be returned.
+          name: associatedUuid
+          required: true
+          type: string
+  '/notifications/v2/{uuid}':
+    get:
+      tags:
+        - notifications
+      responses:
+        '400':
+          description: Raised if a user does not supply a UUID
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The specified notification cannot be found
+        '500':
+          description: The service was unable to query the notification database
+      description: ''
+      summary: Retrieve notification.
+      operationId: get
+      parameters:
+        - in: path
+          description: The uuid of the notification item
+          name: uuid
+          required: true
+          type: string
+    post:
+      tags:
+        - notifications
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid form
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the notification database
+      description: ''
+      summary: Update or Add new notification.
+      operationId: update
+      parameters:
+        - in: path
+          description: The uuid of the notification item
+          name: uuid
+          required: true
+          type: string
+        - in: body
+          description: The notification to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/NotificationRequest'
+    delete:
+      tags:
+        - notifications
+      responses:
+        '400':
+          description: Raised if a user supplies no UUID
+        '401':
+          description: Raised if the user is not authorized.
+        '403':
+          description: Failed to authenticate the user
+        '500':
+          description: The service was unable to query the notification database
+      description: ''
+      summary: Remove notification from the system.
+      operationId: delete
+      parameters:
+        - in: path
+          description: The uuid of the notification item
+          name: uuid
+          required: true
+          type: string
+  /postits/v2/:
+    get:
+      tags:
+        - postits
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: List existing PostIts
+      operationId: list
+    post:
+      tags:
+        - postits
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid username format
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The user profile cannot be found
+        '500':
+          description: The service was unable to query the profile database
+      description: ''
+      summary: Create a new PostIt
+      operationId: create
+      parameters:
+        - in: body
+          description: The PostIt to create.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/PostItRequest'
+  '/postits/v2/{nonce}':
+    delete:
+      tags:
+        - postits
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Immediately invalidates this PostIt URL.
+      operationId: delete
+      parameters:
+        - in: path
+          description: The nonce of this PostIt URL
+          name: nonce
+          required: true
+          type: string
+  /profiles/v2/:
+    get:
+      tags:
+        - profiles
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid username format
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The user profile cannot be found
+        '500':
+          description: The service was unable to query the profile database
+      description: ''
+      summary: Find authenticated user profile
+      operationId: get
+  /profiles/v2/me:
+    get:
+      tags:
+        - profiles
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid username format
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The user profile cannot be found
+        '500':
+          description: The service was unable to query the profile database
+      description: ''
+      summary: Find authenticated user profile
+      operationId: me
+  '/profiles/v2/{username}':
+    get:
+      tags:
+        - profiles
+      responses:
+        '400':
+          description: Raised if a user supplies an invalid username format
+        '403':
+          description: Failed to authenticate the user
+        '404':
+          description: The user profile cannot be found
+        '500':
+          description: The service was unable to query the profile database
+      description: ''
+      summary: Find api user profile by their api username
+      operationId: findByUsername
+      parameters:
+        - in: path
+          description: The username of a valid api user
+          name: username
+          required: true
+          type: string
+          default: me
+  '/profiles/v2/search/{term}/{value}':
+    get:
+      tags:
+        - profiles
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Search for authenticated user profiles by search terms
+      operationId: search
+      parameters:
+        - in: path
+          description: The profile attribute by which to search.
+          name: term
+          required: true
+          type: string
+        - in: path
+          description: The search value. Partial matches will be returned.
+          name: value
+          required: true
+          type: string
+  '/profiles/v2/{apiUsername}/users':
+    get:
+      tags:
+        - profiles
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: List all internal users created by the authenticated user
+      operationId: listInternalUsers
+      parameters:
+        - in: path
+          description: The username of a valid api user
+          name: apiUsername
+          required: true
+          type: string
+    delete:
+      tags:
+        - profiles
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Delete all internal users created by the authenticated user.
+      operationId: deleteInternalUsers
+      parameters:
+        - in: path
+          description: The username of a valid api user
+          name: apiUsername
+          required: true
+          type: string
+    post:
+      tags:
+        - profiles
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Create or update an internal user.
+      operationId: addInternalUser
+      parameters:
+        - in: path
+          description: The username of a valid api user
+          name: apiUsername
+          required: true
+          type: string
+        - in: body
+          description: The internal user to create.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/InternalUserRequest'
+  '/profiles/v2/{apiUsername}/users/{internalUsername}':
+    get:
+      tags:
+        - profiles
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Find api user profile by their api username
+      operationId: getInternalUser
+      parameters:
+        - in: path
+          description: The username of a valid api user
+          name: apiUsername
+          required: true
+          type: string
+        - in: path
+          description: The username of a valid internal user
+          name: internalUsername
+          required: true
+          type: string
+    delete:
+      tags:
+        - profiles
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Delete all internal users created by the authenticated user.
+      operationId: deleteInternalUser
+      parameters:
+        - in: path
+          description: The username of a valid api user
+          name: apiUsername
+          required: true
+          type: string
+        - in: path
+          description: The username of a valid internal user
+          name: internalUsername
+          required: true
+          type: string
+    post:
+      tags:
+        - profiles
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Create or update the given internal user.
+      operationId: updateInternalUser
+      parameters:
+        - in: path
+          description: The username of a valid api user
+          name: apiUsername
+          required: true
+          type: string
+        - in: path
+          description: The username of a valid internal user
+          name: internalUsername
+          required: true
+          type: string
+        - in: body
+          description: The internal user to create.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/InternalUserRequest'
+  '/profiles/v2/{username}/users/search/{term}/{value}':
+    get:
+      tags:
+        - profiles
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Search for internal user profiles by search terms
+      operationId: searchInternalUsers
+      parameters:
+        - in: path
+          description: The username of a valid api user
+          name: username
+          required: true
+          type: string
+        - in: path
+          description: The profile attribute by which to search. Status may be either active or deleted.
+          name: term
+          required: true
+          type: string
+        - in: path
+          description: The search value. Partial matches will be returned.
+          name: value
+          required: true
+          type: string
+  /systems/v2/:
+    get:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Show all systems available to the user.
+      operationId: list
+      parameters:
+        - in: query
+          description: The type of system to return
+          name: type
+          required: false
+          type: string
+        - in: query
+          description: Should only default systems be returned
+          name: defaultOnly
+          required: false
+          type: boolean
+        - in: query
+          description: Should only publicly available systems be returned
+          name: publicOnly
+          required: false
+          type: boolean
+        - in: query
+          description: Should only private available systems be returned
+          name: privateOnly
+          required: false
+          type: boolean
+    post:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Find information about an individual system.
+      operationId: add
+      parameters:
+        - in: body
+          description: The description of the system to add or update.
+          name: fileToUpload
+          required: true
+          schema:
+            $ref: '#/definitions/SystemRequest'
+  '/systems/v2/{systemId}':
+    get:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Find information about an individual system.
+      operationId: get
+      parameters:
+        - in: path
+          description: The unique id of the system
+          name: systemId
+          required: true
+          type: string
+    post:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Find information about an individual system.
+      operationId: update
+      parameters:
+        - in: path
+          description: The unique id of the system
+          name: systemId
+          required: true
+          type: string
+        - in: body
+          description: The description of the system to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/SystemRequest'
+    put:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Perform a management action on the system.
+      operationId: manage
+      parameters:
+        - in: path
+          description: The unique id of the system
+          name: systemId
+          required: true
+          type: string
+        - in: body
+          description: The description of the system to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/SystemOperationRequest'
+    delete:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Delete a system.
+      operationId: delete
+      parameters:
+        - in: path
+          description: The unique id of the system
+          name: systemId
+          required: true
+          type: string
+  '/systems/v2/{systemId}/roles':
+    get:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a list of all users and their roles on this system.
+      operationId: listRoles
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+    post:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Add or update a user's role on a system."
+      operationId: updateRole
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: body
+          description: The role to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/SystemRole'
+    delete:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes all roles on a system.
+      operationId: deleteRoles
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+  '/systems/v2/{systemId}/roles/{username}':
+    get:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Get a specific user's roles on this system."
+      operationId: listRolesForUser
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The username of the user about whose role you are inquiring.
+          name: username
+          required: true
+          type: string
+    post:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Add or update a user's role on a system."
+      operationId: updateRoleForUser
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The username of the api user associated with the role
+          name: username
+          required: true
+          type: string
+        - in: body
+          description: The role to update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/SystemRole'
+    delete:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes all roles on a system.
+      operationId: deleteRoleForUser
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The username of the api user associated with the role
+          name: username
+          required: true
+          type: string
+  '/systems/v2/{systemId}/credentials':
+    get:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a list of all internal users and their credentials on this system.
+      operationId: listCredentials
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+    post:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Add or update a user's credential on a system. This applies both to data and, if applicable, login credenitals."
+      operationId: updateCredentials
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: body
+          description: The description of the internal user credential to add or update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserCredential'
+    delete:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes all credentials registered to a system.
+      operationId: deleteCredentials
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+  '/systems/v2/{systemId}/credentials/{internalUsername}':
+    get:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get a list of all internal users and their credentials on this system.
+      operationId: listCredentialsForInternalUser
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The username of a internal user on this system.
+          name: internalUsername
+          required: true
+          type: string
+    post:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: "Add or update a user's credentials on a system."
+      operationId: updateCredentialsForInternalUser
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The username of a internal user on this system.
+          name: internalUsername
+          required: true
+          type: string
+        - in: body
+          description: The description of the internal user credential to add or update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserCredential'
+    delete:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes all credentials registered to a system.
+      operationId: deleteCredentialsForInternalUser
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The username of a internal user on this system.
+          name: internalUsername
+          required: true
+          type: string
+  '/systems/v2/{systemId}/credentials/{internalUsername}/{credentialType}':
+    get:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Get the internal user credential of the given type on the system.
+      operationId: listCredentialsForInternalUserByType
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The username of a internal user on this system.
+          name: internalUsername
+          required: true
+          type: string
+        - in: path
+          description: The configuration type to which to apply this credential.
+          name: credentialType
+          required: true
+          type: string
+    post:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Add or update a credential of the given type on a system.
+      operationId: updateCredentialsForInternalUserByType
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The username of a internal user on this system.
+          name: internalUsername
+          required: true
+          type: string
+        - in: path
+          description: The configuration type to which to apply this credential.
+          name: credentialType
+          required: true
+          type: string
+        - in: body
+          description: The description of the internal user credential to add or update.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserCredential'
+    delete:
+      tags:
+        - systems
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Deletes the internal user credentials for the given credential type on a system.
+      operationId: deleteCredentialsForInternalUserByType
+      parameters:
+        - in: path
+          description: The id of the system.
+          name: systemId
+          required: true
+          type: string
+        - in: path
+          description: The username of a internal user on this system.
+          name: internalUsername
+          required: true
+          type: string
+        - in: path
+          description: The configuration type to which to apply this credential.
+          name: credentialType
+          required: true
+          type: string
+  /transforms/v2/:
+    get:
+      tags:
+        - transforms
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Find all transforms for use within the api.
+      operationId: list
+  '/transforms/v2/{transformId}':
+    get:
+      tags:
+        - transforms
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Find all transforms matching the given name.
+      operationId: get
+      parameters:
+        - in: path
+          description: The name of the transform requested.
+          name: transformId
+          required: true
+          type: string
+  '/transforms/v2/{transformId}/async/{owner}/{filePath}':
+    post:
+      tags:
+        - transforms
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Transform a file and stage it to a specified location.
+      operationId: transformAndStage
+      parameters:
+        - in: path
+          description: The name of the transform to apply to the given file.
+          name: transformId
+          required: true
+          type: string
+        - in: path
+          description: The name of the api user owning the file at the given path.
+          name: owner
+          required: true
+          type: string
+        - in: path
+          description: The path to the file to be transformed and staged
+          name: filePath
+          required: true
+          type: string
+        - in: body
+          description: The transfer request details.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/TransformRequest'
+  '/transforms/v2/{transformId}/sync/{owner}/{filePath}':
+    post:
+      tags:
+        - transforms
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Transform a file and download it directly.
+      operationId: transformAndDownload
+      parameters:
+        - in: path
+          description: The name of the transform to apply to the given file.
+          name: transformId
+          required: true
+          type: string
+        - in: path
+          description: The name of the api user owning the file at the given path.
+          name: owner
+          required: true
+          type: string
+        - in: path
+          description: The path to the file to be transformed and downloaded.
+          name: filePath
+          required: true
+          type: string
+        - in: body
+          description: The transfer request details.
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/TransformRequest'
+  '/transforms/v2/tags/{tag}':
+    get:
+      tags:
+        - transforms
+      responses:
+        '200':
+          description: No response was specified
+      description: ''
+      summary: Find all transforms with the given tag.
+      operationId: listByTag
+      parameters:
+        - in: path
+          description: The tag to search for transforms on.
+          name: tag
+          required: true
+          type: string
+securityDefinitions:
+  oauth2_implicit:
+    type: oauth2
+    flow: implicit
+    authorizationUrl: 'https://api.araport.org/login'
+    scopes:
+      PRODUCTION: catchall grant type for all api services.
+  oauth2_authorization_code:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: 'https://api.araport.org/authorize'
+    tokenUrl: 'https://api.araport.org/token'
+    scopes:
+      PRODUCTION: catchall grant type for all api services.
+host: api.araport.org
+basePath: /
+schemes:
+  - https
+definitions:
+  ACL:
+    properties:
+      read:
+        description: can read
+        type: boolean
+      write:
+        description: can write
+        type: boolean
+  ApplicationSummary:
+    properties:
+      id:
+        description: Unique id of this app. Comprised of the app name-version.
+        type: string
+      executionSystem:
+        description: The system id of the execution system where this app should run.
+        type: string
+      lastModified:
+        description: The date this application was last modified in ISO 8601 format.
+        format: date-time
+        type: string
+      name:
+        description: 'The name of the application. The name does not have to be unique, but the combination of name and version does.'
+        type: string
+      isPublic:
+        description: Whether the application is public or private.
+        type: boolean
+      revision:
+        description: The number of times this application has been revised.
+        format: int32
+        type: integer
+      shortDescription:
+        description: The short description of this application.
+        type: string
+      version:
+        description: 'The version of the application in #.#.# format. While the version does not need to be unique, the combination of name and version does have to be unique.'
+        type: string
+  Application:
+    properties:
+      available:
+        description: Whether the application is available.
+        type: boolean
+      checkpointable:
+        description: Whether the application supports checkpointing.
+        type: boolean
+      defaultMaxRunTime:
+        description: The max execution time that should be used if none is given in a job description. Ignore if the system does not support schedulers.
+        type: string
+      defaultMemoryPerNode:
+        description: The default memory in GB to pass to the scheduler if none is given in the job description. This must be less than the max memory parameter in the target queue definition.
+        type: string
+      defaultNodeCount:
+        description: The number of nodes that should be used if none is given in a job description. Ignore if the system does not support schedulers.
+        type: string
+      defaultProcessorsPerNode:
+        description: The number of processors to pass to the scheduler if none are given in the job description. This must be 1 if the app is serial.
+        type: string
+      defaultQueue:
+        description: The queue on the execution system that should be used if none is given in a job description. Ignore if the system does not support schedulers.
+        type: string
+      deploymentPath:
+        description: "The location in the user's default storage system containing the application wrapper and dependencies."
+        type: string
+      deploymentSystem:
+        description: The system id of the storage system where this app should run.
+        type: string
+      executionSystem:
+        description: The system id of the execution system where this app should run.
+        type: string
+      executionType:
+        description: "The execution type of the application. If you're unsure, it's probably HPC."
+        enum:
+          - ATMOSPHERE
+          - HPC
+          - CONDOR
+          - CLI
+        type: string
+      helpURI:
+        description: The URL where users can go for more information about the app.
+        type: string
+      id:
+        description: Unique id of this app. Comprised of the app name-version.
+        type: string
+      icon:
+        description: The icon to associate with this app.
+        type: string
+      inputs:
+        description: 'The inputs files for this application. '
+        items:
+          $ref: '#/definitions/ApplicationInput'
+        type: array
+      label:
+        description: The label to use when generating forms.
+        type: string
+      lastModified:
+        description: The date this application was last modified in ISO 8601 format.
+        format: date-time
+        type: string
+      longDescription:
+        description: The full text description of this input to use when generating forms.
+        type: string
+      modules:
+        description: An array of modules to load prior to the execution of the application.
+        items:
+          type: string
+        type: array
+      name:
+        description: 'The name of the application. The name does not have to be unique, but the combination of name and version does.'
+        type: string
+      ontology:
+        description: An array of ontology values describing this application.
+        items:
+          type: string
+        type: array
+      outputs:
+        description: 'The outputs files for this application. '
+        items:
+          $ref: '#/definitions/ApplicationOutput'
+        type: array
+      parallelism:
+        description: "The parallelism type of the application. If you're unsure, it's probably SERIAL."
+        enum:
+          - SERIAL
+          - PARALLEL
+          - PTHREAD
+        type: string
+      parameters:
+        description: 'The inputs parameters for this application. '
+        items:
+          $ref: '#/definitions/ApplicationParameter'
+        type: array
+      isPublic:
+        description: Whether the application is public or private.
+        type: boolean
+      revision:
+        description: The number of times this application has been revised.
+        format: int32
+        type: integer
+      shortDescription:
+        description: The short description of this application.
+        type: string
+      tags:
+        description: An array of tags related to this application.
+        items:
+          type: string
+        type: array
+      templatePath:
+        description: The path to the wrapper script relative to the deploymentPath.
+        type: string
+      testPath:
+        description: The path to the test script relative to the deploymentPath.
+        type: string
+      uuid:
+        description: The UUID of this application. UUID are 36 alphanumeric string.
+        type: string
+      version:
+        description: 'The version of the application in #.#.# format. While the version does not need to be unique, the combination of name and version does have to be unique.'
+        type: string
+  ApplicationRequest:
+    properties:
+      available:
+        description: Whether the application is available.
+        type: boolean
+      checkpointable:
+        description: Whether the application supports checkpointing.
+        type: boolean
+      defaultMaxRunTime:
+        description: The max execution time that should be used if none is given in a job description. Ignore if the system does not support schedulers.
+        type: string
+      defaultMemoryPerNode:
+        description: The default memory in GB to pass to the scheduler if none is given in the job description. This must be less than the max memory parameter in the target queue definition.
+        type: string
+      defaultNodeCount:
+        description: The number of nodes that should be used if none is given in a job description. Ignore if the system does not support schedulers.
+        type: string
+      defaultProcessorsPerNode:
+        description: The number of processors to pass to the scheduler if none are given in the job description. This must be 1 if the app is serial.
+        type: string
+      defaultQueue:
+        description: The queue on the execution system that should be used if none is given in a job description. Ignore if the system does not support schedulers.
+        type: string
+      deploymentPath:
+        description: "The location in the user's default storage system containing the application wrapper and dependencies."
+        type: string
+      deploymentSystem:
+        description: The system id of the storage system where this app should run.
+        type: string
+      executionSystem:
+        description: The system id of the execution system where this app should run.
+        type: string
+      executionType:
+        description: "The execution type of the application. If you're unsure, it's probably HPC."
+        enum:
+          - ATMOSPHERE
+          - HPC
+          - CONDOR
+          - CLI
+        type: string
+      helpURI:
+        description: The URL where users can go for more information about the app.
+        type: string
+      icon:
+        description: The icon to associate with this app.
+        type: string
+      inputs:
+        description: 'The inputs files for this application. '
+        items:
+          $ref: '#/definitions/ApplicationInput'
+        type: array
+      label:
+        description: The label to use when generating forms.
+        type: string
+      longDescription:
+        description: The full text description of this input to use when generating forms.
+        type: string
+      modules:
+        description: An array of modules to load prior to the execution of the application.
+        items:
+          type: string
+        type: array
+      name:
+        description: 'The name of the application. The name does not have to be unique, but the combination of name and version does.'
+        type: string
+      ontology:
+        description: An array of ontology values describing this application.
+        items:
+          type: string
+        type: array
+      outputs:
+        description: 'The outputs files for this application. '
+        items:
+          $ref: '#/definitions/ApplicationOutput'
+        type: array
+      parallelism:
+        description: "The parallelism type of the application. If you're unsure, it's probably SERIAL."
+        enum:
+          - SERIAL
+          - PARALLEL
+          - PTHREAD
+        type: string
+      parameters:
+        description: 'The inputs parameters for this application. '
+        items:
+          $ref: '#/definitions/ApplicationParameter'
+        type: array
+      shortDescription:
+        description: The short description of this application.
+        type: string
+      tags:
+        description: An array of tags related to this application.
+        items:
+          type: string
+        type: array
+      templatePath:
+        description: The path to the wrapper script relative to the deploymentPath.
+        type: string
+      testPath:
+        description: The path to the test script relative to the deploymentPath.
+        type: string
+      version:
+        description: 'The version of the application in #.#.# format. While the version does not need to be unique, the combination of name and version does have to be unique.'
+        type: string
+  ApplicationInput:
+    properties:
+      details:
+        description: 'The details for this input. '
+        $ref: '#/definitions/ApplicationInputDetails'
+      id:
+        description: The id of this input. This will be the replacement string in your wrapper scripts.
+        type: string
+      semantics:
+        description: 'The ontologies for this input. '
+        $ref: '#/definitions/ApplicationInputOntology'
+      value:
+        description: 'The inputs files for this input. '
+        $ref: '#/definitions/ApplicationInputValue'
+  ApplicationInputDetails:
+    properties:
+      description:
+        description: Description of this input.
+        type: string
+      label:
+        description: The label for this input
+        type: string
+      argument:
+        description: 'The command line value of this input (ex -n, --name, -name, etc)'
+        type: string
+      showArgument:
+        description: Whether the argument value should be passed into the wrapper at run time
+        type: boolean
+      repeatArgument:
+        description: Whether the argument value should be repeated in front of each user-supplied input before injection into the wrapper template at runtime
+        type: boolean
+  ApplicationInputValue:
+    properties:
+      defaultValue:
+        description: The default value for this parameter. The type will be determined by the value.type field.
+        type: string
+      enquote:
+        description: Whether the argument value should be surrounded by quotation marks before injection into the wrapper template at runtime
+        type: boolean
+      order:
+        description: The order in which this parameter should be printed when generating an execution command for forked execution. This will also be the order in which paramters are returned in the response json.
+        format: int32
+        type: integer
+        minimum: 0
+      required:
+        description: 'Is this parameter required? If visible is false, this must be true.'
+        type: boolean
+      validator:
+        description: 'The regular expression used to validate this parameter value. For enumerations, separate values with |'
+        type: string
+      visible:
+        description: 'Should this parameter be visible? If not, there must be a default and it will be required.'
+        type: boolean
+  ApplicationInputOntology:
+    properties:
+      fileTypes:
+        description: The file types acceptable for this input.
+        items:
+          type: string
+        type: array
+      minCardinality:
+        description: The minimum number of times this input may appear.
+        format: int32
+        type: integer
+      maxCardinality:
+        description: The maximum number of times this input may appear. -1 is unlimited
+        format: int32
+        type: integer
+      ontology:
+        items:
+          type: string
+        type: array
+  ApplicationOutput:
+    properties:
+      details:
+        description: 'The details for this output. '
+        $ref: '#/definitions/ApplicationParameterDetails'
+      id:
+        description: The id of this output. This will be the replacement string in your wrapper scripts.
+        type: string
+      semantics:
+        description: 'The ontologies for this output. '
+        $ref: '#/definitions/ApplicationOutputOntology'
+      value:
+        description: 'The inputs files for this output. '
+        $ref: '#/definitions/ApplicationParameterValue'
+  ApplicationOutputOntology:
+    properties:
+      fileTypes:
+        description: The file types acceptable for this output.
+        items:
+          type: string
+        type: array
+      maxCardinality:
+        description: The maximum number of times this output may appear.
+        format: int32
+        type: integer
+      minCardinality:
+        description: The minimum number of times this output may appear. -1 is unlimited
+        format: int32
+        type: integer
+      ontology:
+        items:
+          type: string
+        type: array
+  ApplicationParameter:
+    properties:
+      details:
+        description: 'The details for this parameter. '
+        $ref: '#/definitions/ApplicationParameterDetails'
+      id:
+        description: The id of this parameter. This will be the replacement string in your wrapper scripts.
+        type: string
+      semantics:
+        description: 'The ontologies for this parameter. '
+        $ref: '#/definitions/ApplicationParameterOntology'
+      value:
+        description: 'The inputs files for this parameter. '
+        $ref: '#/definitions/ApplicationParameterValue'
+  ApplicationParameterDetails:
+    properties:
+      description:
+        description: Description of this parameter.
+        type: string
+      label:
+        description: The label for this parameter
+        type: string
+      argument:
+        description: 'The command line value of this parameter (ex -n, --name, -name, etc)'
+        type: string
+      showArgument:
+        description: Whether the argument value should be passed into the wrapper template at run time
+        type: boolean
+      repeatArgument:
+        description: Whether the argument value should be repeated in front of each user-supplied input before injection into the wrapper template at runtime
+        type: boolean
+  ApplicationParameterOntology:
+    properties:
+      ontology:
+        items:
+          type: string
+        type: array
+      minCardinality:
+        description: The minimum number of times this input may appear.
+        format: int32
+        type: integer
+      maxCardinality:
+        description: The maximum number of times this input may appear. -1 is unlimited
+        format: int32
+        type: integer
+  ApplicationParameterValue:
+    properties:
+      defaultValue:
+        description: The default value for this parameter. The type will be determined by the value.type field.
+        type: string
+      enumValues:
+        description: An array of enumerated object values.
+        items:
+          type: string
+        type: array
+      enquote:
+        description: Whether the argument value should be surrounded by quotation marks before injection into the wrapper template at runtime
+        type: boolean
+      order:
+        description: The order in which this parameter should be printed when generating an execution command for forked execution. This will also be the order in which paramters are returned in the response json.
+        format: int32
+        type: integer
+      required:
+        description: 'Is this parameter required? If visible is false, this must be true.'
+        type: boolean
+      type:
+        description: The type of this parameter value.
+        enum:
+          - string
+          - number
+          - enumeration
+          - bool
+          - flag
+        type: string
+      validator:
+        description: 'The regular expression used to validate this parameter value. For enumerations, separate values with |'
+        type: string
+      visible:
+        description: 'Should this parameter be visible? If not, there must be a default and it will be required.'
+        type: boolean
+  ApplicationPermissionResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: An array of permission objects for this application.
+        items:
+          $ref: '#/definitions/ApplicationPermission'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  ApplicationFormResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: HTML form representing a job submission request for this app
+        type: string
+      status:
+        description: success or failure
+        type: string
+  EmptyApplicationResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: empty result
+        type: string
+      status:
+        description: success or failure
+        type: string
+  MultipleApplicationResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/ApplicationSummary'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  ApplicationPermission:
+    properties:
+      permission:
+        $ref: '#/definitions/ACL'
+      username:
+        description: Username associate with this permission
+        type: string
+  ApplicationPermissionRequest:
+    properties:
+      username:
+        description: The username of the api user whose permission is to be set.
+        type: string
+      permission:
+        description: The permission to set
+        type: string
+        enum:
+          - READ
+          - WRITE
+          - EXECUTE
+          - READ_WRITE
+          - READ_EXECUTE
+          - WRITE_EXECUTE
+          - ALL
+          - NONE
+  SingleApplicationResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/Application'
+      status:
+        description: success or failure
+        type: string
+  ApplicationOperationRequest:
+    properties:
+      action:
+        description: Action to perform on the file or folder.
+        type: string
+        enum:
+          - publish
+          - clone
+      name:
+        description: Name of cloned app. Only used with the clone action.
+        type: string
+      version:
+        description: Version of the cloned app. Only used with the clone action.
+        type: string
+      deploymentPath:
+        description: "Path to the on cloned app's deployment folder on its storage system. Only used with the clone action."
+        type: string
+      storageSystem:
+        description: "Storage system on which the cloned app's assets resides. Only used with the clone action."
+        type: string
+      executionSystem:
+        description: System on which the clone apps should run. Only used with the clone action.
+        type: string
+  EmptyTokenResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: empty response
+        type: string
+      status:
+        description: success or failure
+        type: string
+  MultipleTokenResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/Token'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  SingleTokenResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/Token'
+      status:
+        description: success or failure
+        type: string
+  Token:
+    properties:
+      created:
+        description: The creation date in ISO 8601 format.
+        format: date-time
+        type: string
+      creator:
+        description: The api user who made the token request.
+        type: string
+      expires:
+        description: The expiration date in ISO 8601 format.
+        format: date-time
+        type: string
+      internal_username:
+        description: The username of the internal user attached to this token.
+        type: string
+      renewed:
+        description: The date the token was last renewed in ISO 8601 format.
+        format: date-time
+        type: string
+      token:
+        description: The token nonce.
+        type: string
+      username:
+        description: The api user for whom this token applies.
+        type: string
+  Client:
+    properties:
+      key:
+        description: The API key for this client.
+        type: string
+      secret:
+        description: The API secret for this client.
+        type: string
+      callbackUrl:
+        description: Callback URL for OAuth authentication grant.
+        type: string
+      description:
+        description: Description of the client. This will be shown to users when authentication via OAuth web flows
+        type: string
+      name:
+        description: The name of the client.
+        type: string
+      tier:
+        description: The access tier for this client.
+        type: string
+  ClientRequest:
+    properties:
+      name:
+        description: The name of the client.
+        type: string
+      description:
+        description: Description of the client. This will be shown to users when authentication via OAuth web flows
+        type: string
+      tier:
+        description: The access tier for this client.
+        type: string
+        enum:
+          - UNLIMITED
+          - GOLD
+          - SILVER
+          - BRONZE
+      callbackUrl:
+        description: Callback URL for OAuth authentication grant.
+        type: string
+  Subscription:
+    properties:
+      apiContext:
+        description: The base url path of the API.
+        type: string
+      apiName:
+        description: The name of the API.
+        type: string
+      apiProvider:
+        description: The user who registered the API.
+        type: string
+      apiVersion:
+        description: The current major version of the API. This is appended to the api_context to create the base API url.
+        type: string
+      status:
+        description: The current status of the API.
+        type: string
+      tier:
+        description: The access tier for this client.
+        type: string
+  ClientSubscriptionRequest:
+    properties:
+      apiName:
+        description: The name of the API.
+        type: string
+      apiProvider:
+        description: The user who registered the API.
+        type: string
+      apiVersion:
+        description: The current major version of the API. This is appended to the api_context to create the base API url.
+        type: string
+      tier:
+        description: The access tier for this client.
+        type: string
+        enum:
+          - UNLIMITED
+          - GOLD
+          - SILVER
+          - BRONZE
+  SingleClientResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/Client'
+      status:
+        description: success or failure
+        type: string
+  MultipleClientResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: List of clients
+        items:
+          $ref: '#/definitions/Client'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  EmptyClientResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        type: string
+      status:
+        description: success or failure
+        type: string
+  MultipleSubscriptionResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: List of subscriptions
+        items:
+          $ref: '#/definitions/Subscription'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  SingleSubscriptionResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/Subscription'
+      status:
+        description: success or failure
+        type: string
+  EmptySubscriptionResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        type: string
+      status:
+        description: success or failure
+        type: string
+  EmptyRemoteFileResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: empty result
+        type: string
+      status:
+        description: success or failure
+        type: string
+  FileHistory:
+    properties:
+      created:
+        description: The date of the event.
+        format: date-time
+        type: string
+      description:
+        description: A brief description of the event details.
+        type: string
+      status:
+        description: The status of the file/folder after this event.
+        type: string
+  FileHistoryResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/FileHistory'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  MultipleRemoteFileResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/RemoteFile'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  RemoteFile:
+    properties:
+      format:
+        description: The file type of the file.
+        type: string
+      lastModified:
+        description: The date this file was last modified in ISO 8601 format.
+        format: date-time
+        type: string
+      length:
+        description: The length of the file/folder.
+        format: int32
+        type: integer
+      mimeType:
+        description: 'The mime type of the file/folder. If unknown, it defaults to application/binary.'
+        type: string
+      name:
+        description: The name of the file/folder.
+        type: string
+      path:
+        description: The absolute path to the file/folder.
+        type: string
+      permissions:
+        description: The system permission of the invoking user on the file/folder.
+        type: string
+      system:
+        description: The systemId of the system where this file lives.
+        type: string
+      type:
+        description: Whether it is a file or folder.
+        type: string
+  SingleRemoteFileResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/RemoteFile'
+      status:
+        description: success or failure
+        type: string
+  MultiplePermissionResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: One or more file permissions
+        items:
+          $ref: '#/definitions/FilePermission'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  FilePermission:
+    properties:
+      name:
+        description: The name of the file/folder.
+        type: string
+      owner:
+        description: Local username of the owner.
+        type: string
+      permissions:
+        description: One or more permission objects
+        items:
+          $ref: '#/definitions/Permission'
+        type: array
+  Permission:
+    properties:
+      permission:
+        $ref: '#/definitions/ACL'
+      username:
+        description: Username associate with this permission
+        type: string
+  PermissionStanza:
+    properties:
+      execute:
+        description: Is the file executable
+        type: boolean
+      read:
+        description: Is the file readable
+        type: boolean
+      write:
+        description: Is the file writable
+        type: boolean
+  FilePermissionRequest:
+    properties:
+      username:
+        description: The username of the api user whose permission is to be set.
+        type: string
+      permission:
+        description: The permission to set
+        type: string
+        enum:
+          - READ
+          - WRITE
+          - EXECUTE
+          - READ_WRITE
+          - READ_EXECUTE
+          - WRITE_EXECUTE
+          - ALL
+          - NONE
+      recursive:
+        description: Should updated permissions be applied recursively. Defaults to false.
+        type: boolean
+  FileOperationRequest:
+    properties:
+      action:
+        description: Action to perform on the file or folder.
+        type: string
+        enum:
+          - mkdir
+          - rename
+          - copy
+          - move
+      path:
+        description: Name of new directory or target file or folder.
+        type: string
+  EmptyJobResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: empty result
+        type: string
+      status:
+        description: success or failure
+        type: string
+  JobOutputFileDownload:
+    properties: {}
+  Job:
+    properties:
+      appId:
+        description: The unique name of the application being run by this job. This must be a valid application that the calling user has permission to run.
+        type: string
+      archive:
+        description: "Whether the output from this job should be archived. If true, all new files created by this application's execution will be archived to the archivePath in the user's default storage system."
+        type: boolean
+      archivePath:
+        description: "The path of the archive folder for this job on the user's default storage sytem."
+        type: string
+      archiveSystem:
+        description: "The unique id of the storage system on which this job's output will be staged."
+        type: string
+      batchQueue:
+        description: The queue to which this job should be submitted. This is optional and only applies when the execution system has a batch scheduler.
+        type: string
+      endTime:
+        description: 'The date the job stopped running due to termination, completion, or error in ISO 8601 format.'
+        format: date-time
+        type: string
+      executionSystem:
+        description: The system id of the execution system.
+        type: string
+      id:
+        description: The unique id of the job.
+        format: int32
+        type: integer
+      inputs:
+        description: "The application specific input files needed for this job. These vary from application to application and should be entered as multiple individual parameters in the form. Inputs may be given as relative paths in the user's default storage system or as URI. If a URI is given, the data will be staged in by the IO service and made avaialble to the application at run time."
+        $ref: '#/definitions/JobInputs'
+      localId:
+        description: The process or local job id of the job on the remote execution system.
+        type: string
+      memoryPerNode:
+        description: The requested memory for this application to run given in GB.
+        type: string
+      message:
+        description: The error message incurred when the job failed.
+        type: string
+      name:
+        description: The name of the job.
+        type: string
+      nodeCount:
+        description: 'The number of processors this application should utilize while running. If the application is not of executionType PARALLEL, this should be 1.'
+        format: int32
+        type: integer
+      notifications:
+        description: An array of notifications you wish to receive.
+        items:
+          $ref: '#/definitions/Notification'
+        type: array
+      outputPath:
+        description: "Relative path of the job's output data."
+        type: string
+      owner:
+        description: The job owner.
+        type: string
+      parameters:
+        description: The application specific parameters needed for this job. These vary from application to application and should be entered as multiple individual parameters in the form. The actual dataType will be determined by the application description.
+        $ref: '#/definitions/JobParameters'
+      processorsPerNode:
+        description: 'The number of processors this application should utilize while running. If the application is not of executionType PARALLEL, this should be 1.'
+        format: int32
+        type: integer
+      maxRunTime:
+        description: 'The requested compute time needed for this application to complete given in HH:mm:ss format.'
+        type: string
+      retries:
+        description: The number of retires it took to submit this job.
+        format: int32
+        type: integer
+      startTime:
+        description: The date the job started in ISO 8601 format.
+        format: date-time
+        type: string
+      status:
+        description: 'The status of the job. Possible values are: PENDING, STAGING_INPUTS, CLEANING_UP, ARCHIVING, STAGING_JOB, FINISHED, KILLED, FAILED, STOPPED, RUNNING, PAUSED, QUEUED, SUBMITTING, STAGED, PROCESSING_INPUTS, ARCHIVING_FINISHED, ARCHIVING_FAILED'
+        type: string
+      submitTime:
+        description: The date the job was submitted in ISO 8601 format.
+        format: date-time
+        type: string
+      workPath:
+        description: The directory on the remote execution system from which the job is running.
+        type: string
+  JobRequest:
+    properties:
+      appId:
+        description: The unique name of the application being run by this job. This must be a valid application that the calling user has permission to run.
+        type: string
+      archive:
+        description: "Whether the output from this job should be archived. If true, all new files created by this application's execution will be archived to the archivePath in the user's default storage system."
+        type: boolean
+      archivePath:
+        description: "The path of the archive folder for this job on the user's default storage sytem."
+        type: string
+      archiveSystem:
+        description: "The unique id of the storage system on which this job's output will be staged."
+        type: string
+      batchQueue:
+        description: The queue to which this job should be submitted. This is optional and only applies when the execution system has a batch scheduler.
+        type: string
+      inputs:
+        description: "The application specific input files needed for this job. These vary from application to application and should be entered as multiple individual parameters in the form. Inputs may be given as relative paths in the user's default storage system or as URI. If a URI is given, the data will be staged in by the IO service and made avaialble to the application at run time."
+        $ref: '#/definitions/JobInputs'
+      memoryPerNode:
+        description: The requested memory for this application to run given in GB.
+        type: string
+      name:
+        description: The name of the job.
+        type: string
+      nodeCount:
+        description: 'The number of processors this application should utilize while running. If the application is not of executionType PARALLEL, this should be 1.'
+        format: int32
+        type: integer
+      notifications:
+        description: An array of notifications you wish to receive.
+        items:
+          $ref: '#/definitions/Notification'
+        type: array
+      parameters:
+        description: The application specific parameters needed for this job. These vary from application to application and should be entered as multiple individual parameters in the form. The actual dataType will be determined by the application description.
+        $ref: '#/definitions/JobParameters'
+      processorsPerNode:
+        description: 'The number of processors this application should utilize while running. If the application is not of executionType PARALLEL, this should be 1.'
+        format: int32
+        type: integer
+        minimum: 1
+      maxRunTime:
+        description: 'The requested compute time needed for this application to complete given in HH:mm:ss format.'
+        type: string
+  JobHistory:
+    properties:
+      created:
+        description: The date of the event.
+        format: date-time
+        type: string
+      description:
+        description: A brief description of the event details.
+        type: string
+      status:
+        description: The status of the job after this event.
+        type: string
+  JobHistoryResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/JobHistory'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  JobPermissionResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/PermissionListing'
+      status:
+        description: success or failure
+        type: string
+  JobSubmission:
+    properties:
+      archive:
+        description: "Whether the output from this job should be archived. If true, all new files created by this application's execution will be archived to the archivePath in the user's default storage system."
+        type: boolean
+      archivePath:
+        description: "The path of the archive folder for this job on the archiveSystem. Defaults to the user's default storage system."
+        type: string
+      archiveSystem:
+        description: The system on which the job data will be archived
+        type: string
+      inputs:
+        description: "The application specific input files needed for this job. These vary from application to application and should be entered as multiple individual parameters in the form. Inputs may be given as relative paths in the user's default storage system or as URI. If a URI is given, the data will be staged in by the IO service and made avaialble to the application at run time."
+        $ref: '#/definitions/JobInputs'
+      name:
+        description: The name of the job.
+        type: string
+      maxMemory:
+        description: The maximum amount of memory needed for this application to run given in GB.
+        type: string
+      nodeCount:
+        description: 'The number of nodes this application should utilize while running. If the application is not of executionType PARALLEL, this should be 1.'
+        format: int32
+        type: integer
+        minimum: 1
+      notifications:
+        description: An array of notifications you wish to receive.
+        items:
+          $ref: '#/definitions/Notification'
+        type: array
+      parameters:
+        description: The application specific parameters needed for this job. These vary from application to application and should be entered as multiple individual parameters in the form. The actual dataType will be determined by the application description.
+        $ref: '#/definitions/JobParameters'
+      processorsPerNode:
+        description: The number of processors this application should utilize while running.
+        format: int32
+        type: integer
+        minimum: 1
+      batchQueue:
+        description: The queue to which this job should be submitted. This is optional and only applies when the execution system has a batch scheduler.
+        type: string
+      maxRunTime:
+        description: 'The estimated compute time needed for this application to complete given in hh:mm:ss format.'
+        type: string
+      appId:
+        description: The unique name of the application being run by this job. This must be a valid application that the calling user has permission to run.
+        type: string
+  JobParameters:
+    properties:
+      parameter1:
+        description: "One or more parameters identified in the description of the app you're running. "
+        type: string
+  JobInputs:
+    properties:
+      parameter1:
+        description: "One or more inputs identified in the description of the app you're running. "
+        type: string
+  MultipleJobResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/JobSummary'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  JobSummary:
+    properties:
+      appId:
+        description: The unique name of the application being run by this job. This must be a valid application that the calling user has permission to run.
+        type: string
+      endTime:
+        description: The date the job ended in ISO 8601 format.
+        format: date-time
+        type: string
+      executionSystem:
+        description: The system id of the execution system.
+        type: string
+      id:
+        description: The unique id of the job.
+        format: int32
+        type: integer
+      name:
+        description: The name of the job.
+        type: string
+      owner:
+        description: The job owner.
+        type: string
+      startTime:
+        description: The date the job started in ISO 8601 format.
+        format: date-time
+        type: string
+      status:
+        description: 'The status of the job. Possible values are: PENDING, STAGING_INPUTS, CLEANING_UP, ARCHIVING, STAGING_JOB, FINISHED, KILLED, FAILED, STOPPED, RUNNING, PAUSED, QUEUED, SUBMITTING, STAGED, PROCESSING_INPUTS, ARCHIVING_FINISHED, ARCHIVING_FAILED'
+        type: string
+  JobStatusResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        $ref: '#/definitions/JobStatus'
+      status:
+        description: success or failure
+        type: string
+  JobStatus:
+    properties:
+      id:
+        description: The unique id of the job.
+        format: int32
+        type: integer
+      status:
+        description: 'The status of the job. Possible values are: PENDING, STAGING_INPUTS, CLEANING_UP, ARCHIVING, STAGING_JOB, FINISHED, KILLED, FAILED, STOPPED, RUNNING, PAUSED, QUEUED, SUBMITTING, STAGED, PROCESSING_INPUTS, ARCHIVING_FINISHED, ARCHIVING_FAILED'
+        type: string
+  Notification:
+    properties:
+      associatedUuid:
+        description: UUID of resource to whome the event applies.
+        type: string
+      attempts:
+        description: The number of times this notification has been attempted to be fulfilled.
+        format: int32
+        type: integer
+      created:
+        description: A timestamp indicating when this notification was created in the notification store.
+        type: string
+        format: date-time
+      lastSent:
+        description: A timestamp indicating the last time this notification was sent.
+        type: string
+        format: date-time
+      owner:
+        description: The API user who owns this notification.
+        type: string
+      persistent:
+        description: Whether this notification should stay active after it fires the first time.
+        type: boolean
+      responseCode:
+        description: The response code from POSTing to the url or sending an email.
+        format: int32
+        type: integer
+      success:
+        description: Whether this notification was sent successfully.
+        type: boolean
+      url:
+        description: The url or email address that will be notified of the event.
+        type: string
+      uuid:
+        description: The UUID for this notification.
+        type: string
+  PermissionListing:
+    properties:
+      name:
+        description: Unique name of the application to which this permissions apply.
+        type: string
+      owner:
+        description: Owner of the application.
+        type: string
+      permissions:
+        description: Permissions granted on this application.
+        items:
+          $ref: '#/definitions/Permission'
+        type: array
+  SingleJobResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/Job'
+      status:
+        description: success or failure
+        type: string
+  JobPermissionRequest:
+    properties:
+      username:
+        description: The username of the api user whose permission is to be set.
+        type: string
+      permission:
+        description: The permission to set
+        type: string
+        enum:
+          - READ
+          - WRITE
+          - EXECUTE
+          - READ_WRITE
+          - READ_EXECUTE
+          - WRITE_EXECUTE
+          - ALL
+          - NONE
+  JobOperationRequest:
+    properties:
+      action:
+        description: Action to perform on the job.
+        type: string
+        enum:
+          - resubmit
+          - stop
+  EmptyMetadata:
+    properties: {}
+  EmptyMetadataResponse:
+    properties:
+      message:
+        description: Error message caused by this request
+        type: string
+      result:
+        $ref: '#/definitions/EmptyMetadata'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MetadataRequest:
+    properties:
+      name:
+        description: The name of this metadata
+        type: string
+      value:
+        description: A free text or JSON string containing the metadata stored for the given associationIds
+        type: string
+      schemaId:
+        description: The UUID of the schema that should be used to validate this request.
+        type: string
+      associationIds:
+        description: 'UUIDs of associated Agave entities, including the Data to which this Metadata belongs.'
+        items:
+          type: string
+        type: array
+  MetadataPermissionRequest:
+    properties:
+      username:
+        description: The username of the api user whose permission is to be set.
+        type: string
+      permission:
+        description: The permission to set
+        type: string
+        enum:
+          - READ
+          - WRITE
+          - READ_WRITE
+          - ALL
+          - NONE
+  Metadata:
+    properties:
+      associationIds:
+        description: 'UUIDs of associated Agave entities, including the Data to which this Metadata belongs.'
+        items:
+          type: string
+        type: array
+      created:
+        description: A timestamp indicating when this Metadata was created in the metadata store.
+        type: string
+        format: date-time
+      internalUsername:
+        description: 'The name of the Internal User, if any, who owns this metadata.'
+        type: string
+      lastUpdated:
+        description: A timestamp indicating when this Metadata was last updated in the metadata store.
+        type: string
+        format: date-time
+      name:
+        description: The name of this metadata
+        type: string
+      owner:
+        description: The API user who owns this Metadata.
+        type: string
+      uuid:
+        description: The UUID for this Metadata.
+        type: string
+      value:
+        description: A free text or JSON string containing the metadata stored for the given associationIds
+        type: string
+  MetadataPermissionResponse:
+    properties:
+      message:
+        description: Error message caused by this request
+        type: string
+      result:
+        description: Permissions granted on this metadata resource.
+        $ref: '#/definitions/Permission'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MetadataResponse:
+    properties:
+      message:
+        description: Error message caused by this request
+        type: string
+      result:
+        $ref: '#/definitions/Metadata'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MetadataSchema:
+    properties:
+      created:
+        description: A timestamp indicating when this Metadata was created in the metadata schema store.
+        type: string
+        format: date-time
+      internalUsername:
+        description: 'The name of the Internal User, if any, who owns this schema.'
+        type: string
+      lastUpdated:
+        description: A timestamp indicating when this Metadata was last updated in the metadata schema store.
+        type: string
+        format: date-time
+      owner:
+        description: The API user who owns this Schema.
+        type: string
+      schema:
+        description: A JSON Schema
+        type: string
+      uuid:
+        description: The UUID for this Schema.
+        type: string
+  MetadataSchemaPermissionResponse:
+    properties:
+      message:
+        description: Error message caused by this request
+        type: string
+      result:
+        description: Permissions granted on this schema resource.
+        $ref: '#/definitions/Permission'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MetadataSchemaResponse:
+    properties:
+      message:
+        description: Error message caused by this request
+        type: string
+      result:
+        $ref: '#/definitions/MetadataSchema'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MultipleMetadataPermissionResponse:
+    properties:
+      message:
+        description: Error message caused by this request
+        type: string
+      result:
+        description: Permissions granted on this metadata resource.
+        items:
+          $ref: '#/definitions/Permission'
+        type: array
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MultipleMetadataResponse:
+    properties:
+      message:
+        description: Error message caused by this request
+        type: string
+      result:
+        description: Metadata resources matching the query.
+        items:
+          $ref: '#/definitions/MetadataResponse'
+        type: array
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MultipleMetadataSchemaPermissionResponse:
+    properties:
+      message:
+        description: Error message caused by this request
+        type: string
+      result:
+        description: Permissions granted on this schema resource.
+        items:
+          $ref: '#/definitions/Permission'
+        type: array
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  EmptyMonitor:
+    properties: {}
+  EmptyMonitorResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/EmptyMonitor'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MultipleMonitorResponse:
+    properties:
+      message:
+        description: Description of an error. null otherwise.
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/MonitorDescription'
+        type: array
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MultipleMonitorCheckResponse:
+    properties:
+      message:
+        description: Description of an error. null otherwise.
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/MonitorCheck'
+        type: array
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MonitorRequest:
+    properties:
+      active:
+        description: Whether this monitor is currently active.
+        type: boolean
+        default: true
+      frequency:
+        description: The interval in minutes on which this monitor will run. Minimum is 5. Default is 720.
+        format: int32
+        type: integer
+        minimum: 5
+        default: 720
+      internalUsername:
+        description: Internal user account used to perform the check.
+        type: string
+      target:
+        description: The id of the sytem to be monitored. This must be an active system registered with the Systems service.
+        type: string
+        default: data.iplantcollaborative.org
+      updateSystemStatus:
+        description: Whether this Monitor should update the system status when the results change. You must have the ADMIN role on the target system to use this feature.
+        type: boolean
+        default: false
+  MonitorDescription:
+    properties:
+      active:
+        description: Whether this monitor is currently active.
+        type: boolean
+      created:
+        description: A timestamp indicating when this Monitor was created.
+        type: string
+        format: date-time
+      frequency:
+        description: The interval in minutes on which this monitor will run. Minimum is 5. Default is 720.
+        format: int32
+        type: integer
+      id:
+        description: The UUID for this monitor.
+        type: string
+      internalUsername:
+        description: Internal user account used to perform the check.
+        type: string
+      lastCheck:
+        description: The results of the last check run by this monitor.
+        $ref: '#/definitions/MonitorCheck'
+      lastSuccess:
+        description: A timestamp indicating the last time this Monitor succeeded in ISO 8601 format
+        type: string
+        format: date-time
+      lastUpdated:
+        description: A timestamp indicating the last time this Monitor was updated in ISO 8601 format
+        type: string
+        format: date-time
+      nextUpdate:
+        description: A timestamp indicating the next time this Monitor will be run in ISO 8601 format
+        type: string
+        format: date-time
+      owner:
+        description: The API user who owns this Monitor.
+        type: string
+      target:
+        description: The id of the sytem to be monitored. This must be an active system registered with the Systems service.
+        type: boolean
+      updateSystemStatus:
+        description: Whether this Monitor should update the system status when the results change. You must have the ADMIN role on the target system to use this feature.
+        type: boolean
+  MonitorCheck:
+    properties:
+      created:
+        description: A timestamp indicating when this monitor check was created.
+        type: string
+        format: date-time
+      id:
+        description: The UUID for this monitor check.
+        type: string
+      message:
+        description: The error message if this monitor check failed.
+        type: string
+      result:
+        description: The results of this monitor check.
+        type: string
+        enum:
+          - PASSED
+          - FAILED
+          - UNKNOWN
+  MonitorResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/MonitorDescription'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MonitorCheckResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/MonitorCheck'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  EmptyNotification:
+    properties: {}
+  EmptyNotificationResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/EmptyNotification'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  MultipleNotificationResponse:
+    properties:
+      message:
+        description: Description of an error. null otherwise.
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/Notification'
+        type: array
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  NotificationRequest:
+    properties:
+      associatedUuid:
+        description: UUID of resource to whome the event applies.
+        type: string
+      url:
+        description: The url or email address that will be notified of the event.
+        type: string
+      persistent:
+        description: Whether this notification should stay active after it fires the first time.
+        type: boolean
+  NotificationResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/Notification'
+      status:
+        description: success or failure
+        type: string
+      version:
+        description: API version number
+        type: string
+  PostIt:
+    properties:
+      created:
+        description: The creation date in ISO 8601 format.
+        format: date-time
+        type: string
+      creator:
+        description: The api user who made the PostIt creation request.
+        type: string
+      expires:
+        description: The expiration date in ISO 8601 format.
+        format: date-time
+        type: string
+      internalUsername:
+        description: The username of the internal user attached to this PostIt.
+        type: string
+      method:
+        description: The url that will be invoked when the PostIt is redeemed.
+        type: string
+      postit:
+        description: The PostIt nonce.
+        type: string
+      remainingUses:
+        description: 'The number of invocations remaining on this token. '
+        format: int32
+        type: integer
+      url:
+        description: The url that will be invoked when the PostIt is redeemed.
+        type: string
+      noauth:
+        description: 'If true, the provided url will be called without authentication. Default is false'
+        type: boolean
+  PostItRequest:
+    properties:
+      url:
+        description: The url that will be invoked when the PostIt is redeemed.
+        type: string
+      internalUsername:
+        description: The username of the internal user attached to this PostIt.
+        type: string
+      method:
+        description: The method that will be invoked when the PostIt is redeemed.
+        type: string
+        enum:
+          - GET
+          - PUT
+          - POST
+          - DELETE
+      lifetime:
+        description: The maximum lifetime in seconds of this PostIt on this token. Defaults to 2592000 (30 days)
+        format: int32
+        type: integer
+        minimum: 1
+      maxUses:
+        description: The maximum number of invocations remaining on this PostIt. Defaults to no limit
+        format: int32
+        type: integer
+      noauth:
+        description: 'If true, the provided url will be called without authentication. Default is false'
+        type: boolean
+  SinglePostItResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/PostIt'
+      status:
+        description: success or failure
+        type: string
+  MultiplePostItResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: list of postits
+        items:
+          $ref: '#/definitions/PostIt'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  InternalUser:
+    properties:
+      city:
+        description: "The api user's city."
+        type: string
+      country:
+        description: "The api user's country."
+        type: string
+      department:
+        description: "The api user's institutional department."
+        type: string
+      email:
+        description: "The api user's unique email address."
+        type: string
+      fax:
+        description: "The api user's fax number."
+        type: string
+      firstName:
+        description: "The api user's first name."
+        type: string
+      gender:
+        description: "The api user's gender. male or female."
+        type: string
+      institution:
+        description: "The api user's home institution"
+        type: string
+      lastName:
+        description: "The api user's last name."
+        type: string
+      phone:
+        description: "The api user's phone number."
+        type: string
+      position:
+        description: "The api user's position of employment."
+        type: string
+      researchArea:
+        description: "The api user's primary area of research."
+        type: string
+      state:
+        description: "The api user's state."
+        type: string
+      status:
+        description: "The api user's status. active or deleted."
+        type: string
+      username:
+        description: "The api user's unique username."
+        type: string
+  InternalUserRequest:
+    properties:
+      username:
+        description: "The api user's unique username."
+        type: string
+      email:
+        description: "The api user's unique email address."
+        type: string
+      city:
+        description: "The api user's city."
+        type: string
+      country:
+        description: "The api user's country."
+        type: string
+      department:
+        description: "The api user's institutional department."
+        type: string
+      fax:
+        description: "The api user's fax number."
+        type: string
+      firstName:
+        description: "The api user's first name."
+        type: string
+      gender:
+        description: "The api user's gender. male or female."
+        type: string
+        enum:
+          - male
+          - female
+      institution:
+        description: "The api user's home institution"
+        type: string
+      lastName:
+        description: "The api user's last name."
+        type: string
+      phone:
+        description: "The api user's phone number."
+        type: string
+      position:
+        description: "The api user's position of employment."
+        type: string
+      researchArea:
+        description: "The api user's primary area of research."
+        type: string
+      state:
+        description: "The api user's state."
+        type: string
+      status:
+        description: "The api user's status. active or deleted."
+        type: string
+  MultipleInternalUserResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/InternalUser'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  MultipleProfileResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/Profile'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  Profile:
+    properties:
+      city:
+        description: "The api user's city."
+        type: string
+      country:
+        description: "The api user's country."
+        type: string
+      department:
+        description: "The api user's institutional department."
+        type: string
+      email:
+        description: "The api user's unique email address."
+        type: string
+      fax:
+        description: "The api user's fax number."
+        type: string
+      firstName:
+        description: "The api user's first name."
+        type: string
+      gender:
+        description: "The api user's gender. male or female."
+        type: string
+      institution:
+        description: "The api user's home institution"
+        type: string
+      lastName:
+        description: "The api user's last name."
+        type: string
+      phone:
+        description: "The api user's phone number."
+        type: string
+      position:
+        description: "The api user's position of employment."
+        type: string
+      researchArea:
+        description: "The api user's primary area of research."
+        type: string
+      state:
+        description: "The api user's state."
+        type: string
+      username:
+        description: "The api user's unique username."
+        type: string
+      uuid:
+        description: A unique uuid for this user.
+        type: string
+  SingleInternalUserResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/InternalUser'
+      status:
+        description: success or failure
+        type: string
+  SingleProfileResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/Profile'
+      status:
+        description: success or failure
+        type: string
+  EmptySystemResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: empty result
+        type: string
+      status:
+        description: success or failure
+        type: string
+  MultipleSystemResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/SystemSummary'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  SingleSystemResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/System'
+      status:
+        description: success or failure
+        type: string
+  BatchQueue:
+    properties:
+      customDirectives:
+        description: 'Any custom directives that should be appended to scheduler directives. ex. #$ -A TG-12345'
+        type: string
+      isDefault:
+        description: Is this the default queue for the system.
+        type: boolean
+      maxJobs:
+        description: The maximum number of jobs that can be in queue at once.
+        format: int32
+        type: integer
+      maxUserJobs:
+        description: The maximum number of jobs per user that can be in queue at once.
+        format: int32
+        type: integer
+      maxNodes:
+        description: The max nodes available per node to jobs submitted to this queue.
+        type: string
+      maxMemoryPerNode:
+        description: The max memory available per node to jobs submitted to this queue.
+        type: string
+      maxProcessorsPerNode:
+        description: The max processors per node available to jobs submitted to this queue.
+        format: int32
+        type: integer
+      maxRequestedTime:
+        description: 'The max length of jobs submitted to this queue in hhh:mm:ss format.'
+        type: string
+      name:
+        description: The name of the batch queue.
+        type: string
+  LoginConfig:
+    properties:
+      auth:
+        description: The default authentication credential used for this system.
+        $ref: '#/definitions/UserCredential'
+      host:
+        description: The hostname or ip address of the submission server
+        type: string
+      port:
+        description: The port number of the submission server.
+        format: int32
+        type: integer
+      protocol:
+        description: The protocol used to authenticate to the submission server.
+        enum:
+          - GSISSH
+          - SSH
+          - LOCAL
+        type: string
+  StorageConfig:
+    properties:
+      auth:
+        description: The default authentication credential used for this system.
+        $ref: '#/definitions/UserCredential'
+      containerName:
+        description: The name of the bucket to interact with when using an object store.
+        type: string
+      homeDir:
+        description: 'The path on the remote system to use as the home directory for all API requests. For cases where the home directory should be dynamically defined, the ${USERNAME} token can be included in the homeDir value to represent the username of the authenticated user. ex. /home/${USERNAME}.'
+        type: string
+      host:
+        description: The hostname or ip address of the storage server
+        type: string
+      port:
+        description: The port number of the storage server.
+        format: int32
+        type: integer
+      mirror:
+        description: Whether the permissions set on the server should be pushed to the storage system itself. This only applies to IRODS and AWS systems.
+        type: boolean
+      protocol:
+        description: The protocol used to authenticate to the storage server.
+        enum:
+          - AZURE
+          - FTP
+          - GRIDFTP
+          - IRODS
+          - LOCAL
+          - S3
+          - SFTP
+          - SWIFT
+        type: string
+      publicAppsDir:
+        description: The path on the remote system where apps will be stored if this is set as the default public storage system.
+        type: string
+      resource:
+        description: The name of the target resource when defining an IRODS system.
+        type: string
+      rootDir:
+        description: The path on the remote system to use as the root for all API requests.
+        type: string
+      zone:
+        description: The name of the zone when defining an IRODS system.
+        type: string
+  StoredCredential:
+    properties:
+      credential:
+        description: 'The credential used to authenticate to the remote system. Depending on the authentication protocol of the remote system, this could be an OAuth Token, X.509 certificate, Kerberose token, or an private key..'
+        type: string
+      expirationDate:
+        description: The date the credential expires in ISO 8601 format.
+        format: date-time
+        type: string
+      internalUsername:
+        description: The username of the internal user associated with this credential.
+        type: string
+      isDefault:
+        description: Is this the default credential for this internal user of this type on this system?
+        type: boolean
+      parentType:
+        description: The system type this credential is associated with.
+        enum:
+          - STORAGE
+          - EXECUTION
+        type: string
+      password:
+        description: The password on the remote system used to authenticate.
+        type: string
+      publicKey:
+        description: The public ssh key used to authenticate to the remote system.
+        type: string
+      privateKey:
+        description: The public ssh key used to authenticate to the remote system..
+        type: string
+      server:
+        description: The server from which a credential may be obtained.
+        $ref: '#/definitions/UserCredentialServer'
+      type:
+        description: The authentication type.
+        enum:
+          - APIKEYS
+          - LOCAL
+          - PAM
+          - PASSWORD
+          - SSHKEYS
+          - TOKEN
+          - X509
+        type: string
+      username:
+        description: The local username on the remote system used to authenticate.
+        type: string
+      valid:
+        description: Is the credential still valid or has it expired?.
+        type: boolean
+  SystemSummary:
+    properties:
+      description:
+        description: Verbose description of this system.
+        type: string
+      id:
+        description: Unique identifier for this system.
+        type: string
+      isDefault:
+        description: Is the system the default for the authenticated user?
+        type: boolean
+      isPublic:
+        description: Is the system publicly available?
+        type: boolean
+      name:
+        description: Common name for this system.
+        type: string
+      status:
+        description: The status of this system. Systems must be in UP status to be used.
+        enum:
+          - UP
+          - DOWN
+          - UNKNOWN
+        type: string
+      type:
+        description: The type of this system.
+        enum:
+          - EXECUTION
+          - STORAGE
+        type: string
+  System:
+    discriminator: type
+    properties:
+      description:
+        description: Verbose description of this system.
+        type: string
+      environment:
+        description: Environment variables to set upon login prior to job submission.
+        type: string
+      id:
+        description: Unique identifier for this system.
+        type: string
+      isDefault:
+        description: Is the system the default for the authenticated user?
+        type: boolean
+      isPublic:
+        description: Is the system publicly available?
+        type: boolean
+      lastModified:
+        description: The date this system was last modified in ISO 8601 format.
+        format: date-time
+        type: string
+      login:
+        description: The login config defining how to connect to this system for job submission.
+        $ref: '#/definitions/LoginConfig'
+      name:
+        description: Common name for this system.
+        type: string
+      revision:
+        description: The number of times this app has been updated.
+        type: integer
+      site:
+        description: The site associated with this system.
+        type: string
+      startupScript:
+        description: Script to be run after login and prior to execution.
+        type: string
+      status:
+        description: The status of this system. Systems must be in UP status to be used.
+        enum:
+          - UP
+          - DOWN
+          - UNKNOWN
+        type: string
+      storage:
+        description: The storage config defining how to connect to this system for data staging.
+        $ref: '#/definitions/StorageConfig'
+      type:
+        description: The type of this system.
+        enum:
+          - EXECUTION
+          - STORAGE
+        type: string
+      uuid:
+        description: The uuid of this system.
+        type: string
+  SystemRequest:
+    discriminator: type
+    required:
+      - id
+      - storage
+      - name
+      - status
+      - type
+    properties:
+      description:
+        description: Verbose description of this system.
+        type: string
+      environment:
+        description: Environment variables to set upon login prior to job submission.
+        type: string
+      id:
+        description: Unique identifier for this system.
+        type: string
+      login:
+        description: The login config defining how to connect to this system for job submission.
+        $ref: '#/definitions/LoginConfig'
+      name:
+        description: Common name for this system.
+        type: string
+      site:
+        description: The site associated with this system.
+        type: string
+      startupScript:
+        description: Script to be run after login and prior to execution.
+        type: string
+      status:
+        description: The functional status of this system. Systems must be in UP status to be used.
+        enum:
+          - UP
+          - DOWN
+          - UNKNOWN
+        type: string
+      storage:
+        description: The storage config defining how to connect to this system for data staging.
+        $ref: '#/definitions/StorageConfig'
+      type:
+        description: The type of this system.
+        enum:
+          - EXECUTION
+          - STORAGE
+        type: string
+  StorageSystem:
+    properties: {}
+    allOf:
+      - $ref: '#/definitions/System'
+      - $ref: '#/definitions/SystemRequest'
+  ExecutionSystem:
+    required:
+      - executionType
+      - login
+      - queues
+      - scheduler
+    properties:
+      executionType:
+        description: The execution paradigm used to run jobs on this system.
+        enum:
+          - HPC
+          - CONDOR
+          - CLI
+        type: string
+      maxSystemJobs:
+        description: The maximum number of jobs that can be simultaneously run on the system across all queues.
+        format: int32
+        type: integer
+      maxSystemJobsPerUser:
+        description: The maximum number of jobs that can be simultaneously run on the system across all queues by a single user.
+        format: int32
+        type: integer
+      queues:
+        description: The execution paradigm used to run jobs on this system.
+        items:
+          $ref: '#/definitions/BatchQueue'
+        type: array
+      scheduler:
+        description: The type of scheduled used to run jobs.
+        enum:
+          - COBALT
+          - CONDOR
+          - FORK
+          - LOADLEVELER
+          - LSF
+          - MOAB
+          - PBS
+          - SGE
+          - SLURM
+          - TORQUE
+          - UNKNOWN
+        type: string
+      scratchDir:
+        description: The scratch directory where job execution directories will be created at runtime. The workDir is used if this is not specified.
+        type: string
+      workDir:
+        description: 'The work directory where job execution directories will be created at runtime. This is used if scratchDir is not specified. If neither are specified, the job directory will be created in the system homeDir.'
+        type: string
+    allOf:
+      - $ref: '#/definitions/System'
+      - $ref: '#/definitions/SystemRequest'
+  SystemCredentialsResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/StoredCredential'
+      status:
+        description: success or failure
+        type: string
+  MultipleSystemRoleResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: All matching roles for this system
+        items:
+          $ref: '#/definitions/SystemRole'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  SystemRole:
+    properties:
+      username:
+        description: The username of the api user granted this role.
+        type: string
+      role:
+        description: The role granted this user.
+        enum:
+          - GUEST
+          - USER
+          - PUBLISHER
+          - ADMIN
+          - OWNER
+        type: string
+  UserCredential:
+    properties:
+      credential:
+        description: 'The credential used to authenticate to the remote system. Depending on the authentication protocol of the remote system, this could be an OAuth Token, X.509 certificate, Kerberose token, or an private key..'
+        type: string
+      internalUsername:
+        description: The username of the internal user associated with this credential.
+        type: string
+      password:
+        description: The password on the remote system used to authenticate.
+        type: string
+      publicKey:
+        description: The public ssh key used to authenticate to the remote system.
+        type: string
+      privateKey:
+        description: The public ssh key used to authenticate to the remote system..
+        type: string
+      server:
+        description: The server from which a credential may be obtained.
+        $ref: '#/definitions/UserCredentialServer'
+      type:
+        description: The authentication type.
+        enum:
+          - APIKEYS
+          - LOCAL
+          - PAM
+          - PASSWORD
+          - SSHKEYS
+          - TOKEN
+          - X509
+        type: string
+      username:
+        description: The local username on the remote system used to authenticate.
+        type: string
+  UserCredentialServer:
+    properties:
+      endpoint:
+        description: The hostname or ip address of the remote server.
+        type: string
+      port:
+        description: The port number of the remote server..
+        format: int32
+        type: integer
+      protocol:
+        description: The protocol used to obtain a credential from the remote server.
+        enum:
+          - MYPROXY
+          - MPG
+        type: string
+  SystemOperationRequest:
+    properties:
+      action:
+        description: Action to perform on the system.
+        type: string
+        enum:
+          - PUBLISH
+          - UNPUBLISH
+          - SETDEFAULT
+          - UNSETDEFAULT
+          - SETGLOBALDEFAULT
+          - UNSETGLOBALDEFAULT
+          - CLONE
+      id:
+        description: The new system id of the cloned system
+        type: string
+  SingleTrackResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: empty response
+        type: string
+      status:
+        description: success or failure
+        type: string
+  Transform:
+    properties:
+      decoders:
+        description: The available decoders for this transform.
+        items:
+          $ref: '#/definitions/Decoder'
+        type: array
+      description:
+        description: Description of this transform.
+        type: string
+      descriptionurl:
+        description: The URL to find out more information.
+        type: string
+      enabled:
+        description: Whether this transform is enabled or not.
+        type: boolean
+      encoder:
+        description: The encoder to use to convert to this format.
+        $ref: '#/definitions/Encoder'
+      name:
+        description: The name of this transform.
+        type: string
+      tags:
+        description: The tags describing this transform.
+        items:
+          type: string
+        type: array
+  Decoder:
+    properties:
+      description:
+        description: The description of what this decoder is and what it does.
+        type: string
+      name:
+        description: The decoder name.
+        type: string
+  Encoder:
+    properties:
+      description:
+        description: The description of what this encoder is and what it does.
+        type: string
+      name:
+        description: The encoder name.
+        type: string
+  Tag:
+    properties:
+      name:
+        type: string
+        description: The tag name.
+  SingleTransformResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        $ref: '#/definitions/Transform'
+      status:
+        description: success or failure
+        type: string
+  MultipleTransformResponse:
+    properties:
+      message:
+        description: success or failure
+        type: string
+      result:
+        description: response body
+        items:
+          $ref: '#/definitions/Transform'
+        type: array
+      status:
+        description: success or failure
+        type: string
+  FileDownload:
+    properties: {}
+  TransformRequest:
+    properties:
+      nativeFormat:
+        description: 'The original file type of the file. If not given, the file type is assumed to be raw.'
+        type: string
+      url:
+        description: The uri to which the transformed file will be staged.
+        type: string
+      callbackUrl:
+        description: 'The URI to notify when the transfer is complete. This can be an email address or http URL. If a URL is given, a GET will be made to this address. URL templating is supported. Valid template values are: ${NAME}, ${SOURCE_FORMAT}, ${DEST_FORMAT}, ${STATUS}'
+        type: string

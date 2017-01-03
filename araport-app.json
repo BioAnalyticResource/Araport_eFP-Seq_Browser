@@ -2,7 +2,9 @@
   "name": "eFP-Seq Browser",
   "description": "eFP-Seq Browser",
   "icon": "app/data/BAR.png",
-  "tags": [],
+  "tags": [
+  	"eFP-Seq", "BAR"
+  ],
   "fullscreen": "default",
   "html": "main.html",
   "scripts": [

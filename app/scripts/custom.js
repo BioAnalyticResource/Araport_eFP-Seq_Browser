@@ -18,6 +18,7 @@ var max_absolute_fpkm = -1;
 var max_log_fpkm = -1;
 var svg_colouring_element = null; // the element for inserting the SVG colouring scale legend
 var gene_structure_colouring_element = null; // the element for inserting the gene structure scale legend
+var rnaseq_success = 0;	// Variable for progress BAR
 
 // Base 64 images
 var img_loading_base64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAAyCAYAAADP/dvoAAAABmJLR0QAwADAAMAanQdUAAAACXBIWXMAAA7CAAAOwgEVKEqAAAAAB3RJTUUH4AoRDzYeAMpyUgAABGJJREFUeNrt3TFoE3scwPGvjxtOzKAQMEOECBkyROhQsWOEChURBFtssdJFB9Gl4OJkwaEtRRAUdLAUqYJgwamIEFAwUoS43RCw0AwpOjhkuCHDQd5Qes9q+7A+7cP2+1na5K53cH/Kl19yIfu63W4XSZL2qL+8BJIkQyhJ0h4VfPvExMSEV0WStGt92zknQkmSE+GPFFOSpN00CToRSpJkCCVJhlCSJEMoSZIhlCTJEEqSZAglSTKEkiQZQkmSDKEkSYZQkiRDKEmSIZQkyRBKe8HDhw/5/Pnzbzn2/v3709/Hx8d/23kkGULpp01PT9NoNH7LsTudDgBJktBut0mSxAsu/Q8CL4G0fUmSEEURcRxTLpc5ePBguu3Lly9EUUQ2m6VcLm/4u0ajQRzH9PT0/PNPGARcu3aNXC6X7lMqlVheXv5u3/Xt69NjJpOht7fXBZEMobRz2u02Z8+eJY5jCoUCtVqN58+fU6lUePLkCXfu3KGnp4d6vU5vby9zc3PA2peCzs7OUiqVvjvm8ePHWVlZoVAocPr0aQYHB6nX6zSbTSqVSnqMkZGRdHp88+YNw8PDzM/PuyiSIZR2zv3798lms7x9+xZYex/x5s2bLC0tce7cOYaHhwmCgHa7zaFDh5ibm6PZbDI9Pc3Hjx/J5/MsLCxQrVa3PMfhw4d5/fo1rVaLI0eOMDk5CUC1WuXTp08EQcCxY8e4cOGCCyIZQmlnffjwgfPnz6ePBwYGuHr1KrD2UmW1WqVWq7G6upru02w2yeVy5PN5AAYHB//1HOvb1/fvdDpkMhniOGZ5eZlCoUCSJOnLqZIMobRjkiRJb3RZF4YhAFNTUywuLnLr1i2KxSKPHj36df+sQUChUODSpUt0Oh0uXrzo+4PSL+Bdo9I2nThxgsePH6d3eS4sLDAwMADA+/fvOXPmDP39/RtiWSqVaLVaRFEEwN27d7d93iiKCIKA27dv8+DBAy5fvpxuazQa1Ov1dHp89uxZuq1ardJqtVw4yYlQ2r4wDDl58mT6eGZmhuvXr/Pu3TuOHj1KJpMhDENevHgBwNjYGFeuXOHVq1eEYUg2mwUgl8sxMzPDqVOnyOfz9PX1pS97/sgkCFAul2m32zx9+pQkSajVaoyOjjI5Ocns7CxRFPHy5UuiKGJkZIT+/n6y2Szj4+OMjY1x48YNF1TaxL5ut9v9+omJiYkNPyVtLo5jkiTZ8NEJWPv4BJBG8GudTockSchkMts+39TUFKurq9y7dw+Aer3O0NAQKysrLob0A7bqmxOh9JO2itlmAfx6wvxZfX19DA0NEYYhBw4cYHFxkdHRURdC+o8MofSHqFQqLC0tUavVAJifn9/0M4mSDKG0axWLRYrFohdC+oW8a1SSZAglSTKEkiQZQkmSDKEkSYZQkiRDKEmSIZQkyRBKkmQIJUkyhJIkGUJJkgyhJEmGUJKkP9mWX8PkN9RLkpwIJUna5fZ1u92ul0GS5EQoSdIe9DfEVWhcl8IjHgAAAABJRU5ErkJggg==";
@@ -444,112 +445,117 @@ function parseIntArray(arr) {
     }
     return arr;
 }
+function amazonAWSSuccess(response_rnaseq, i) {
+    if (locus != response_rnaseq['locus']) {
+        console.log("ERROR: " + locus + "'s RNA-Seq API request returned with data for some other locus.");
+    }
+    // Update the progress bar
+    if (response_rnaseq['status'] == 200) {
+        rnaseq_success++;
+        date_obj3 = new Date();
+        rnaseq_success_current_time = date_obj3.getTime(); // Keep track of start time
+        var progress_percent = (rnaseq_success + 1) / 113 * 100;
+        $('div#progress').width(progress_percent + '%');
+        document.getElementById('progress_tooltip').innerHTML = i + " / 113 requests completed<br/>Load time <= " + String(round(parseInt(rnaseq_success_current_time - rnaseq_success_start_time) / (1000 * 60))) + " mins.";
+        //console.log("Requests = " + String(rnaseq_success) + ", time delta = " + String(parseInt(rnaseq_success_current_time - rnaseq_success_start_time)));
+    } else {
+        $('#failure').show();
+        console.log("ERROR CODE = " + response_rnaseq['status'] + " returned for " + locus + " RNA-Seq data.");
+    }
 
-/* Makes AJAX request for each RNA-Seq image based on the rnaseq_calls array that was produced by the populate_table() function */
-function rnaseq_images(status) {
-    rnaseq_success = 0;
+    var r = [];
+    if (status == 2) { // Used to be 1
+        // Finalize statistical calculations
+        var ss_y = parseInt(response_rnaseq['ss_y']);
+        var sum_y = parseInt(response_rnaseq['sum_y']);
+        var ssy = parseInt(response_rnaseq['ss_y']);
+        var sum_xy = parseIntArray(response_rnaseq['sum_xy'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
+        var sum_x = parseIntArray(response_rnaseq['sum_x'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
+        var sum_xx = parseIntArray(response_rnaseq['sum_xx'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
+        var ss_x = parseIntArray(response_rnaseq['ss_x'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
+        var ssx = parseIntArray(response_rnaseq['ss_x'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
+        var n = parseInt(response_rnaseq['end']) - parseInt(response_rnaseq['start']);
+        var sp = [];
+        // Compute the r values for each variant
+        for (var i = 0; i < sum_xy.length; i++) {
+            sp.splice(i, 0, sum_xy[i] - ((sum_x[i] * sum_y) / n));
+            r.splice(i, 0, sp[i] / (Math.sqrt(ssx[i] * ssy)));
+        }
+    } else {
+        //r.push(parseIntArray(String(response_rnaseq['r']).replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(',')));
+        r = response_rnaseq['r'];
+        //console.log(r);
+    }
+    //console.log("ss_y = ", ss_y, ", sum_y = ", sum_y, ", sum_xy = ", sum_xy, ", sum_x = ", sum_x, ", sum_xx = ", sum_xx, ", ss_x = ", ss_x, ", ssx = ", ssx, ", ssy = ", ssy, ", n = ", n, ", sp = ", sp, ", ssx = ", ssx, ", ssy = ", ssy, ", r = ", r);
+
+    // FOR CACHE PURPOSES, swap the 2nd and 3rd statements
+    //console.log("if (record == \"" + response_rnaseq['record'] + "\"):");
+    //console.log("\tdumpJSON(" + response_rnaseq['status'] + ", \"" + response_rnaseq['locus'] + "\", " + response_rnaseq['variant'] + ", " + response_rnaseq['chromosome'] + ", " + response_rnaseq['start'] + ", " + response_rnaseq['end'] + ", \"" + response_rnaseq['record'] + "\", \"" + response_rnaseq['tissue'] + "\", \"" + response_rnaseq['rnaseqbase64'] + "\", " + response_rnaseq['reads_mapped_to_locus'] + ", " + response_rnaseq['absolute-fpkm'] + ", " + response_rnaseq['ss_y'] + ", " + response_rnaseq['sum_y'] + ", \"" + response_rnaseq['sum_xy'] + "\", \"" + response_rnaseq['sum_x'] + "\", \"" + response_rnaseq['sum_xx'] + "\", \"" + response_rnaseq['ss_x'] + "\")");
+    //console.log("\tdumpJSON(" + response_rnaseq['status'] + ", \"" + response_rnaseq['locus'] + "\", " + response_rnaseq['variant'] + ", " + response_rnaseq['chromosome'] + ", " + response_rnaseq['start'] + ", " + response_rnaseq['end'] + ", \"" + response_rnaseq['record'] + "\", \"" + response_rnaseq['tissue'] + "\", \"" + response_rnaseq['rnaseqbase64'] + "\", " + response_rnaseq['reads_mapped_to_locus'] + ", " + response_rnaseq['absolute-fpkm'] + ", \"" + response_rnaseq['r'] + "\")");
+
+    // find the correct row and update coverage image, and stats info
+    document.getElementById(response_rnaseq['record'] + '_rnaseq_img').src = 'data:image/png;base64,' + response_rnaseq['rnaseqbase64'];
+    document.getElementById(response_rnaseq['record'] + '_pcc').innerHTML = r[0];
+    document.getElementById(response_rnaseq['record'] + '_rpkm').innerHTML = response_rnaseq['absolute-fpkm'];
+
+    // Save the abs-fpkm, and the stats numbers
+    for (var ii = 0; ii < 113; ii++) {
+        if (exp_info[ii][0] == response_rnaseq['record'] + '_svg') { // Find the correct element
+            exp_info[ii].splice(3, 1, response_rnaseq['absolute-fpkm']);
+            exp_info[ii].splice(5, 1, r);
+            //console.log("Found " + response_rnaseq['record'] + " == " + exp_info[ii][0] + ".");
+        }
+    }
+
+    // TODO: Need a map of record to svg subunits
+
+    // Colour SVG by Absolute RPKM
+    colour_part_by_id(response_rnaseq['record'] + '_svg', 'Shapes', response_rnaseq['absolute-fpkm'], 'abs');
+
+    if (rnaseq_success == 113 || rnaseq_success % 10 == 0) {
+        // Execute the colour_svgs_now() function
+        colour_svgs_now();
+        // Change the input box value to max absolute fpkm
+        document.getElementById("rpkm_scale_input").value = parseInt(round(max_absolute_fpkm));
+        // Execute the colour_svgs_now() function and use the new max absolute fpkm
+        colour_svgs_now();
+        if (rnaseq_success == 113) {
+            date_obj4 = new Date();
+            rnaseq_success_end_time = date_obj4.getTime(); // Keep track of start time
+            //console.log(rnaseq_success_end_time);
+            document.getElementById('progress_tooltip').innerHTML = rnaseq_success + " / 113 requests completed<br/>Load time ~= " + String(round(parseInt(rnaseq_success_end_time - rnaseq_success_start_time) / (1000 * 60))) + " mins.";
+            //console.log("**** Requests = " + String(rnaseq_success) + ", time delta = " + String(parseInt(rnaseq_success_end_time - rnaseq_success_start_time)));
+        }
+    }
+
+    $("#thetable").trigger("update");
+}
+
+function rnaseq_images(i, j, status) {
     //date_obj2 = new Date();
     //rnaseq_success_start_time = date_obj2.getTime(); // Keep track of start time
     get_input_values();
     if (rnaseq_calls.length == 113) {
-        for (var i = 0; i < 113; i++) {
-            $.ajax({
-				beforeSend: function(request) {
-					request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
-				},
-                //url: 'http://ec2-52-70-232-122.compute-1.amazonaws.com/RNA-Browser/cgi-bin/webservice.cgi?tissue=' + rnaseq_calls[i][0] + '&record=' + rnaseq_calls[i][1] + '&locus=' + locus + '&variant=1&start=' + locus_start + '&end=' + locus_end + '&yscale=' + yscale_input + '&status=' + status + '&struct=' + splice_variants,
-                url: 'https://api.araport.org/community/v0.3/asher-live/efp-seq_browser_aws_v0.1/access/webservice.cgi?tissue=' + rnaseq_calls[i][0] + '&record=' + rnaseq_calls[i][1] + '&locus=' + locus + '&variant=1&start=' + locus_start + '&end=' + locus_end + '&yscale=' + yscale_input + '&status=' + status + '&struct=' + splice_variants,
-                dataType: 'json',
-                failure: function(failure_response) {
-                    $('#failure').show();
-                },
-                success: function(response_rnaseq) {
-                    if (locus != response_rnaseq['locus']) {
-                        console.log("ERROR: " + locus + "'s RNA-Seq API request returned with data for some other locus.");
-                    }
-                    // Update the progress bar
-                    if (response_rnaseq['status'] == 200) {
-                        rnaseq_success++;
-                        date_obj3 = new Date();
-                        rnaseq_success_current_time = date_obj3.getTime(); // Keep track of start time
-                        var progress_percent = rnaseq_success / 113 * 100;
-                        $('div#progress').width(progress_percent + '%');
-                        document.getElementById('progress_tooltip').innerHTML = rnaseq_success + " / 113 requests completed<br/>Load time <= " + String(round(parseInt(rnaseq_success_current_time - rnaseq_success_start_time) / (1000 * 60))) + " mins.";
-                        //console.log("Requests = " + String(rnaseq_success) + ", time delta = " + String(parseInt(rnaseq_success_current_time - rnaseq_success_start_time)));
-                    } else {
-                        $('#failure').show();
-                        console.log("ERROR CODE = " + response_rnaseq['status'] + " returned for " + locus + " RNA-Seq data.");
-                    }
+        $.ajax({
+			//url: 'http://bar.utoronto.ca/~ppurohit/RNA-Browser/cgi-bin/get_gene_structures.cgi?locus=' + locus, 
+			beforeSend: function(request) {
+				request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
+			},
 
-                    var r = [];
-                    if (status == 2) { // Used to be 1
-                        // Finalize statistical calculations
-                        var ss_y = parseInt(response_rnaseq['ss_y']);
-                        var sum_y = parseInt(response_rnaseq['sum_y']);
-                        var ssy = parseInt(response_rnaseq['ss_y']);
-                        var sum_xy = parseIntArray(response_rnaseq['sum_xy'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
-                        var sum_x = parseIntArray(response_rnaseq['sum_x'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
-                        var sum_xx = parseIntArray(response_rnaseq['sum_xx'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
-                        var ss_x = parseIntArray(response_rnaseq['ss_x'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
-                        var ssx = parseIntArray(response_rnaseq['ss_x'].replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(','));
-                        var n = parseInt(response_rnaseq['end']) - parseInt(response_rnaseq['start']);
-                        var sp = [];
-                        // Compute the r values for each variant
-                        for (var i = 0; i < sum_xy.length; i++) {
-                            sp.splice(i, 0, sum_xy[i] - ((sum_x[i] * sum_y) / n));
-                            r.splice(i, 0, sp[i] / (Math.sqrt(ssx[i] * ssy)));
-                        }
-                    } else {
-                        //r.push(parseIntArray(String(response_rnaseq['r']).replace(/\[/g, "").replace(/\]/g, "").replace(/"/g, "").split(',')));
-                        r = response_rnaseq['r'];
-                        //console.log(r);
-                    }
-                    //console.log("ss_y = ", ss_y, ", sum_y = ", sum_y, ", sum_xy = ", sum_xy, ", sum_x = ", sum_x, ", sum_xx = ", sum_xx, ", ss_x = ", ss_x, ", ssx = ", ssx, ", ssy = ", ssy, ", n = ", n, ", sp = ", sp, ", ssx = ", ssx, ", ssy = ", ssy, ", r = ", r);
-
-                    // FOR CACHE PURPOSES, swap the 2nd and 3rd statements
-                    //console.log("if (record == \"" + response_rnaseq['record'] + "\"):");
-                    //console.log("\tdumpJSON(" + response_rnaseq['status'] + ", \"" + response_rnaseq['locus'] + "\", " + response_rnaseq['variant'] + ", " + response_rnaseq['chromosome'] + ", " + response_rnaseq['start'] + ", " + response_rnaseq['end'] + ", \"" + response_rnaseq['record'] + "\", \"" + response_rnaseq['tissue'] + "\", \"" + response_rnaseq['rnaseqbase64'] + "\", " + response_rnaseq['reads_mapped_to_locus'] + ", " + response_rnaseq['absolute-fpkm'] + ", " + response_rnaseq['ss_y'] + ", " + response_rnaseq['sum_y'] + ", \"" + response_rnaseq['sum_xy'] + "\", \"" + response_rnaseq['sum_x'] + "\", \"" + response_rnaseq['sum_xx'] + "\", \"" + response_rnaseq['ss_x'] + "\")");
-                    //console.log("\tdumpJSON(" + response_rnaseq['status'] + ", \"" + response_rnaseq['locus'] + "\", " + response_rnaseq['variant'] + ", " + response_rnaseq['chromosome'] + ", " + response_rnaseq['start'] + ", " + response_rnaseq['end'] + ", \"" + response_rnaseq['record'] + "\", \"" + response_rnaseq['tissue'] + "\", \"" + response_rnaseq['rnaseqbase64'] + "\", " + response_rnaseq['reads_mapped_to_locus'] + ", " + response_rnaseq['absolute-fpkm'] + ", \"" + response_rnaseq['r'] + "\")");
-
-                    // find the correct row and update coverage image, and stats info
-                    document.getElementById(response_rnaseq['record'] + '_rnaseq_img').src = 'data:image/png;base64,' + response_rnaseq['rnaseqbase64'];
-                    document.getElementById(response_rnaseq['record'] + '_pcc').innerHTML = r[0];
-                    document.getElementById(response_rnaseq['record'] + '_rpkm').innerHTML = response_rnaseq['absolute-fpkm'];
-
-                    // Save the abs-fpkm, and the stats numbers
-                    for (var ii = 0; ii < 113; ii++) {
-                        if (exp_info[ii][0] == response_rnaseq['record'] + '_svg') { // Find the correct element
-                            exp_info[ii].splice(3, 1, response_rnaseq['absolute-fpkm']);
-                            exp_info[ii].splice(5, 1, r);
-                            //console.log("Found " + response_rnaseq['record'] + " == " + exp_info[ii][0] + ".");
-                        }
-                    }
-
-                    // TODO: Need a map of record to svg subunits
-
-                    // Colour SVG by Absolute RPKM
-                    colour_part_by_id(response_rnaseq['record'] + '_svg', 'Shapes', response_rnaseq['absolute-fpkm'], 'abs');
-
-                    if (rnaseq_success == 113 || rnaseq_success % 10 == 0) {
-                        // Execute the colour_svgs_now() function
-                        colour_svgs_now();
-                        // Change the input box value to max absolute fpkm
-                        document.getElementById("rpkm_scale_input").value = parseInt(round(max_absolute_fpkm));
-                        // Execute the colour_svgs_now() function and use the new max absolute fpkm
-                        colour_svgs_now();
-                        if (rnaseq_success == 113) {
-                            date_obj4 = new Date();
-                            rnaseq_success_end_time = date_obj4.getTime(); // Keep track of start time
-                            //console.log(rnaseq_success_end_time);
-                            document.getElementById('progress_tooltip').innerHTML = rnaseq_success + " / 113 requests completed<br/>Load time ~= " + String(round(parseInt(rnaseq_success_end_time - rnaseq_success_start_time) / (1000 * 60))) + " mins.";
-                            //console.log("**** Requests = " + String(rnaseq_success) + ", time delta = " + String(parseInt(rnaseq_success_end_time - rnaseq_success_start_time)));
-                        }
-                    }
-
-                    $("#thetable").trigger("update");
-                }
-            });
-        }
+            url: 'https://api.araport.org/community/v0.3/asher-live/efp-seq_browser_aws_v0.1/access/webservice.cgi?tissue=' + rnaseq_calls[i][0] + '&record=' + rnaseq_calls[i][1] + '&locus=' + locus + '&variant=1&start=' + locus_start + '&end=' + locus_end + '&yscale=' + yscale_input + '&status=' + status + '&struct=' + splice_variants,
+            dataType: 'json',
+            failure: function(failure_response) {
+                $('#failure').show();
+            },
+            success: function(response_rnaseq) {
+		        amazonAWSSuccess(response_rnaseq, i);
+				// Run the first one
+				if (i <= j) {
+					i++;
+					rnaseq_images(i, j, status);
+				}
+            }
+        });
     }
 }
 
@@ -633,7 +639,8 @@ function populate_table(status) {
                 exp_info.push([experimentno + '_svg', svg_part, controls, 0, 0, 0, 0]);
 
                 if (rnaseq_calls.length == 113) {
-                    rnaseq_images(status);
+					rnaseq_images(0, 60, status);	// Run a thread for first 60
+					rnaseq_images(61, 112, status);	// Run another thread for the remaining till (113 - 1)
                 }
             });
             // add parser through the tablesorter addParser method 
