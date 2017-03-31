@@ -377,7 +377,7 @@ function variants_radio_options(status) {
 		beforeSend: function(request) {
 			request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
 		},
-		url: 'https://api.araport.org/community/v0.3/asher-live/efp-seq_browser_gene_structure_v0.1/access/get_gene_structures.cgi?locus=' + locus,
+		url: 'https://api.araport.org/community/v0.3/asher-live/efp-seq_browser_gene_structure_v0.2/access/get_gene_structures.cgi?locus=' + locus,
         dataType: 'json',
         success: function(gene_res) {
             // Update locus_start and locus_end
@@ -458,7 +458,7 @@ function rnaseq_images(status) {
 					request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
 				},
                 //url: 'http://ec2-52-70-232-122.compute-1.amazonaws.com/RNA-Browser/cgi-bin/webservice.cgi?tissue=' + rnaseq_calls[i][0] + '&record=' + rnaseq_calls[i][1] + '&locus=' + locus + '&variant=1&start=' + locus_start + '&end=' + locus_end + '&yscale=' + yscale_input + '&status=' + status + '&struct=' + splice_variants,
-                url: 'https://api.araport.org/community/v0.3/asher-live/efp-seq_browser_aws_v0.1/access/webservice.cgi?tissue=' + rnaseq_calls[i][0] + '&record=' + rnaseq_calls[i][1] + '&locus=' + locus + '&variant=1&start=' + locus_start + '&end=' + locus_end + '&yscale=' + yscale_input + '&status=' + status + '&struct=' + splice_variants,
+                url: 'https://api.araport.org/community/v0.3/asher-live/efp-seq_browser_aws_v0.2/access/webservice.cgi?tissue=' + rnaseq_calls[i][0] + '&record=' + rnaseq_calls[i][1] + '&locus=' + locus + '&variant=1&start=' + locus_start + '&end=' + locus_end + '&yscale=' + yscale_input + '&status=' + status + '&struct=' + splice_variants,
                 dataType: 'json',
                 failure: function(failure_response) {
                     $('#failure').show();
